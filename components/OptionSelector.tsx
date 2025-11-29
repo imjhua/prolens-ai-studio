@@ -55,7 +55,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
   // 카테고리별 그룹핑 로직: 조명/시점/기타 (General 그룹 우선, 나머지 카테고리별)
   const renderGroupedOptions = () => {
     // General 그룹(랜덤/없음 등) 우선 노출
-    const generalOptions = options.filter(o => o.category === 'General');
+    const generalOptions = options.filter(o => !o.category);
     const otherCategories = Array.from(new Set(options.map(o => o.category).filter(cat => cat && cat !== 'General')));
     return (
       <div className="space-y-4">

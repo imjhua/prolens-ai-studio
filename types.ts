@@ -1,36 +1,19 @@
 
-export type LightingCategory = 'Natural' | 'Artificial' | 'General';
 
-export interface LightingOption {
+
+export interface OptionBase {
   id: string;
   label: string;
-  category: LightingCategory;
-  description?: string;
-  previewUrl?: string;
-}
-
-export interface CameraOption {
-  id: string;
-  label: string;
-  description?: string;
-  previewUrl?: string;
-}
-
-export interface PovOption {
-  id: string;
-  label: string;
+  value: string;
   category?: string;
   description?: string;
   previewUrl?: string;
 }
 
-export interface ColorOption {
-  id: string;
-  label: string;
-  category?: string;
-  description?: string;
-  previewUrl?: string;
-}
+export type LightingOption = OptionBase;
+export type CameraOption = OptionBase;
+export type PovOption = OptionBase;
+export type ColorOption = OptionBase;
 
 export interface AppState {
   selectedLighting: string;
@@ -40,6 +23,7 @@ export interface AppState {
   additionalDetails: string;
   generatedImage: string | null;
   generatedPrompt: string | null;
+  koreanPrompt: string | null;
   isGenerating: boolean;
   error: string | null;
 }
