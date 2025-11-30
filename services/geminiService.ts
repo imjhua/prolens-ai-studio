@@ -6,7 +6,7 @@ export const generateImage = async (
   camera: string,
   color: string,
   details: string
-): Promise<{ imageUrl: string, fullPrompt: string, koreanPrompt: string }> => {
+): Promise<{ imageUrl: string | null, fullPrompt: string, koreanPrompt: string, error?: string }> => {
   const apiKey = process.env.API_KEY;
   if (!apiKey) {
     throw new Error("API Key is missing in the environment variables.");
@@ -27,14 +27,15 @@ export const generateImage = async (
 
         User Input (Keywords or Short Description): "${details}"
         Lighting Condition: "${lighting}"
-        Camera Setup (Angle/POV/Lens): "${camera}"
+        Camera Setup (Angle/Lens): "${camera}"
         Color Grading & Tone: "${color}"
 
         Tasks:
         1. Expand the user input into a detailed, photorealistic visual scene description in English. The description MUST incorporate the provided lighting, camera, and color specifications as part of the scene, ensuring there is no conflict or contradiction between the scene and these technical details. Focus on the subject, action, and environment, and naturally blend the lighting, camera, and color into the description.
-        2. If the user input contains multiple objects or subjects, creatively imagine a scenario or interaction between them, rather than simply listing them. For example, if the input is 'bowl, car, deer', you might describe a scene where a deer and a car are racing, or a car shaped like a bowl is being observed by a deer. Be creative and make the scene interesting.
-        3. If there is a conflict between the subject's detail/description and the camera POV, always prioritize the camera POV for the scene composition. (예: "드론뷰로 촉촉한 흙을 본다"와 같이 디테일이 근접 관찰을 암시해도, 시점이 드론이면 드론 시점을 우선한다)
-        4. Translate this expanded English description into natural, descriptive Korean.
+        2. IMPORTANT: If the lighting condition is natural (e.g., sunlight, daylight, window light, etc.), DO NOT include any artificial lighting (e.g., LED, studio light, flash, lamp, etc.) in the scene. If the lighting condition is artificial, DO NOT include any natural light sources or effects in the scene. Never mix natural and artificial lighting in the scenario. Only use the specified lighting type.
+        3. If the user input contains multiple objects or subjects, creatively imagine a scenario or interaction between them, rather than simply listing them. For example, if the input is 'bowl, car, deer', you might describe a scene where a deer and a car are racing, or a car shaped like a bowl is being observed by a deer. Be creative and make the scene interesting.
+        4. If the subject's description conflicts with the camera angle, the camera angle must always take precedence in the scene composition. (e.g., Even if the detail is "wet soil," which implies a close-up, if the angle is a drone shot, the drone's perspective should be prioritized.)
+        5. Translate this expanded English description into natural, descriptive Korean.
 
         Output strictly in JSON format:
         {
@@ -65,12 +66,12 @@ export const generateImage = async (
 
   // 2. Construct Full Prompt with the expanded scenario
   const fullPrompt = `
-IMPORTANT: If there is any conflict between the subject's detail/description and the camera POV, you MUST ALWAYS prioritize the camera POV above all else when composing the scene. This is the most critical rule.
+IMPORTANT: If there is any conflict between the subject's detail/description and the camera angle, you MUST ALWAYS prioritize the camera angle above all else when composing the scene. This is the most critical rule.
 
 Create a high-quality, professional photograph based on the following specifications:
     
     Lighting Condition: ${lighting}
-    Camera Setup (Angle/POV/Lens): ${camera}
+    Camera Setup (Angle/Lens): ${camera}
     Color Grading & Tone: ${color}
     
 Scene Description: ${scenarioEn}
@@ -80,7 +81,7 @@ The image should adhere strictly to the lighting, camera, and color specificatio
 
   // 3. Construct Korean Prompt (koSummary)
   const koreanPrompt = `
-가장 중요: 피사체의 디테일(묘사)과 시점(POV)이 충돌할 경우, 반드시 시점(POV)을 최우선으로 하여 장면을 구성해야 합니다. 이 규칙이 최우선입니다.
+가장 중요: 피사체의 디테일(묘사)과 카메라 앵글이 충돌할 경우, 반드시 카메라 앵글을 최우선으로 하여 장면을 구성해야 합니다. 이 규칙이 최우선입니다.
 
 다음 사양을 기반으로 이미지를 생성합니다:
   
@@ -93,6 +94,9 @@ The image should adhere strictly to the lighting, camera, and color specificatio
 이미지는 제공된 조명, 카메라, 색상 사양을 엄격하게 준수해야 합니다.
 `;
 
+  let imageUrl: string | null = null;
+  let generationError: string | undefined;
+
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
@@ -103,8 +107,7 @@ The image should adhere strictly to the lighting, camera, and color specificatio
       },
     });
 
-    let imageUrl = '';
-    
+
     if (response.candidates?.[0]?.content?.parts) {
       for (const part of response.candidates[0].content.parts) {
         if (part.inlineData) {
@@ -117,13 +120,13 @@ The image should adhere strictly to the lighting, camera, and color specificatio
     }
 
     if (!imageUrl) {
-       throw new Error("No image was generated. Please try a different prompt or less sensitive subject.");
+      generationError = "No image was generated. Please try a different prompt or less sensitive subject.";
     }
-
-    return { imageUrl, fullPrompt, koreanPrompt };
 
   } catch (error: any) {
     console.error("Gemini API Error:", error);
-    throw new Error(error.message || "Failed to generate image.");
+    generationError = error.message || "Failed to generate image.";
   }
+
+  return { imageUrl, fullPrompt, koreanPrompt, error: generationError };
 };

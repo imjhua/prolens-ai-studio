@@ -2,15 +2,21 @@
 import React, { useState, useCallback, useRef } from 'react';
 import Header from './components/Header';
 import OptionSelector from './components/OptionSelector';
-import { LIGHTING_OPTIONS, POV_OPTIONS, COLOR_OPTIONS } from './constants';
+import { LIGHTING_OPTIONS, ANGLE_OPTIONS, COLOR_OPTIONS } from './constants';
 import { generateImage } from './services/geminiService';
 
 const App: React.FC = () => {
   // Default to 'random' as requested
-  const [selectedLighting, setSelectedLighting] = useState<string>('random');
-  const [selectedPov, setSelectedPov] = useState<string>('random');
-  const [selectedColor, setSelectedColor] = useState<string>('random');
-  const [additionalDetails, setAdditionalDetails] = useState<string>('');
+  // const [selectedLighting, setSelectedLighting] = useState<string>('random');
+  // const [selectedPov, setSelectedPov] = useState<string>('random');
+  // const [selectedColor, setSelectedColor] = useState<string>('random');
+  // const [additionalDetails, setAdditionalDetails] = useState<string>('');
+
+  const [selectedLighting, setSelectedLighting] = useState<string>('natural-noon');
+  const [selectedPov, setSelectedPov] = useState<string>('');
+  const [selectedColor, setSelectedColor] = useState<string>('none');
+  const [additionalDetails, setAdditionalDetails] = useState<string>('축구장에서 축구하는 선수들');
+
 
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [generatedPrompt, setGeneratedPrompt] = useState<string | null>(null);
@@ -31,8 +37,8 @@ const App: React.FC = () => {
     if (selectedLighting === 'random') lightingOption = LIGHTING_OPTIONS.find(o => o.id === 'random');
     let lightingKo = lightingOption ? getKo(lightingOption.label) : selectedLighting;
     // POV
-    let povOption = POV_OPTIONS.find(o => o.id === selectedPov);
-    if (selectedPov === 'random') povOption = POV_OPTIONS.find(o => o.id === 'random');
+    let povOption = ANGLE_OPTIONS.find(o => o.id === selectedPov);
+    if (selectedPov === 'random') povOption = ANGLE_OPTIONS.find(o => o.id === 'random');
     let povKo = povOption ? getKo(povOption.label) : selectedPov;
     // Color
     let colorOption = COLOR_OPTIONS.find(o => o.id === selectedColor);
@@ -82,7 +88,7 @@ const App: React.FC = () => {
         lightingPromptEn = `${activeLightingOption.category} Light - ${lightingPromptEn}`;
       }
       // Korean Prompt (Display)
-      lightingPromptKo = activeLightingOption.category === 'Natural' 
+      lightingPromptKo = activeLightingOption.category === 'Natural'
         ? `자연광: ${getKo(activeLightingOption.label)}`
         : activeLightingOption.category === 'Artificial'
           ? `인공광: ${getKo(activeLightingOption.label)}`
@@ -96,14 +102,14 @@ const App: React.FC = () => {
 
     // 1. Handle Random POV logic
     if (effectivePovId === 'random') {
-      const candidates = POV_OPTIONS.filter(o => o.id !== 'random');
+      const candidates = ANGLE_OPTIONS.filter(o => o.id !== 'random');
       const randomOption = candidates[Math.floor(Math.random() * candidates.length)];
       effectivePovId = randomOption.id;
       povPromptEn = randomOption.value;
       povPromptKo = getKo(randomOption.label);
     } else {
       // 2. Resolve label from ID
-      const opt = POV_OPTIONS.find(o => o.id === effectivePovId);
+      const opt = ANGLE_OPTIONS.find(o => o.id === effectivePovId);
       if (opt) {
         povPromptEn = opt.value;
         // 자연광/인공광 구분처럼 3인칭은 "3인칭: ..."으로 표기
@@ -132,17 +138,21 @@ const App: React.FC = () => {
         colorPromptEn,
         additionalDetails
       );
-      setGeneratedImage(imageUrl);
+      
       setGeneratedPrompt(fullPrompt);
       setKoreanPrompt(koreanPrompt);
 
-      // setUsedOptions는 useEffect에서 관리하므로 중복 호출하지 않음
+      if (imageUrl) {
+        setGeneratedImage(imageUrl);
+      } else {      
+        setError('이미지 생성에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+      }
 
       setTimeout(() => {
         resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     } catch (err: any) {
-      setError('이미지 생성에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+      setError('에러가 발생했습니다. 잠시 후 다시 시도해 주세요.');
     } finally {
       setIsGenerating(false);
     }
@@ -169,8 +179,8 @@ const App: React.FC = () => {
 
 
               <OptionSelector
-                title="시점 (Point of View)"
-                options={POV_OPTIONS}
+                title="카메라 앵글 (Camera Angle)"
+                options={ANGLE_OPTIONS}
                 selectedId={selectedPov}
                 onSelect={setSelectedPov}
                 groupByCategory={true}
@@ -208,23 +218,23 @@ const App: React.FC = () => {
 
             {/* Options Summary Pill */}
             <div className="pt-6">
-            <div className="p-4 bg-card rounded-xl border border-slate-700/50">
-              <h4 className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-2">Selected Configuration</h4>
-              <div className="flex flex-wrap gap-2 text-xs text-slate-300">
-                <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                  조명: {usedOptions ? usedOptions.lighting : ''}
-                </span>
-                <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                  시점: {usedOptions ? usedOptions.pov : ''}
-                </span>
-                <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                  색상: {usedOptions ? usedOptions.color : ''}
-                </span>
-                <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                  추가 정보: {usedOptions ? usedOptions.details : ''}
-                </span>
+              <div className="p-4 bg-card rounded-xl border border-slate-700/50">
+                <h4 className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-2">Selected Configuration</h4>
+                <div className="flex flex-wrap gap-2 text-xs text-slate-300">
+                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                    조명: {usedOptions ? usedOptions.lighting : ''}
+                  </span>
+                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                    시점: {usedOptions ? usedOptions.pov : ''}
+                  </span>
+                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                    색상: {usedOptions ? usedOptions.color : ''}
+                  </span>
+                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                    추가 정보: {usedOptions ? usedOptions.details : ''}
+                  </span>
+                </div>
               </div>
-            </div>
             </div>
 
             <div className="sticky bottom-4 z-10 pt-4 lg:pt-0">
@@ -261,34 +271,25 @@ const App: React.FC = () => {
 
           {/* Right Column: Result */}
           <div className="lg:col-span-5" ref={resultRef}>
-
-            {generatedImage && (<div className={`
-              rounded-2xl border-2 border-dashed 
-              flex flex-col items-center justify-center relative overflow-hidden transition-all duration-500
-              border-transparent bg-black
-            `}>
-
-
-              {generatedImage && (
-                <div className="relative group w-full flex items-center justify-center bg-black">
-                  <img
-                    src={generatedImage}
-                    alt="Generated Art"
-                    className="w-full h-auto object-contain shadow-2xl"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent opacity-100 transition-opacity flex justify-between items-end">
-                    <span className="text-xs text-slate-300 font-mono">Generative AI Output</span>
-                    <a
-                      href={generatedImage}
-                      download={`prolens-ai-${Date.now()}.png`}
-                      className="bg-white text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors"
-                    >
-                      다운로드
-                    </a>
-                  </div>
-                </div>
-              )}
-            </div>)}
+            {generatedImage && (
+              <div className="bg-black m-4">
+                <img
+                  src={generatedImage}
+                  alt="Generated Art"
+                  className="max-w-[90%] h-auto object-contain mx-auto block shadow-2xl"
+                />
+                {/* <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent opacity-100 transition-opacity flex justify-between items-end">
+                  <span className="text-xs text-slate-300 font-mono">Generative AI Output</span>
+                  <a
+                    href={generatedImage}
+                    download={`prolens-ai-${Date.now()}.png`}
+                    className="bg-white text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors"
+                  >
+                    다운로드
+                  </a>
+                </div> */}
+              </div>
+            )}
 
             {/* English Prompt (Actual Input) */}
             {generatedPrompt && (

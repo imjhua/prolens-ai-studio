@@ -12,7 +12,6 @@ export interface OptionBase {
 
 export type LightingOption = OptionBase;
 export type CameraOption = OptionBase;
-export type PovOption = OptionBase;
 export type ColorOption = OptionBase;
 
 export interface AppState {
