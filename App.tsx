@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import Header from './components/Header';
 import OptionSelector from './components/OptionSelector';
-import { LIGHTING_OPTIONS, ANGLE_OPTIONS, COLOR_OPTIONS } from './constants';
+import { LIGHTING_OPTIONS, ANGLE_OPTIONS, COLOR_OPTIONS, SCENE_OPTIONS } from './constants';
 import { generateImage } from './services/geminiService';
 
 const App: React.FC = () => {
@@ -12,9 +12,13 @@ const App: React.FC = () => {
   // const [selectedColor, setSelectedColor] = useState<string>('random');
   // const [additionalDetails, setAdditionalDetails] = useState<string>('');
 
-  const [selectedLighting, setSelectedLighting] = useState<string>('natural-noon');
-  const [selectedPov, setSelectedPov] = useState<string>('');
-  const [selectedColor, setSelectedColor] = useState<string>('none');
+  // 장면 설정
+  const [selectedScene, setSelectedScene] = useState<string>('random');
+  const [customScene, setCustomScene] = useState<string>('random');
+
+  const [selectedLighting, setSelectedLighting] = useState<string>('random');
+  const [selectedPov, setSelectedPov] = useState<string>('random');
+  const [selectedColor, setSelectedColor] = useState<string>('random');
   const [additionalDetails, setAdditionalDetails] = useState<string>('축구장에서 축구하는 선수들');
 
 
@@ -44,17 +48,26 @@ const App: React.FC = () => {
     let colorOption = COLOR_OPTIONS.find(o => o.id === selectedColor);
     if (selectedColor === 'random') colorOption = COLOR_OPTIONS.find(o => o.id === 'random');
     let colorKo = colorOption ? getKo(colorOption.label) : selectedColor;
+    // Scene
+    let sceneKo = selectedScene === 'custom' ? customScene : '랜덤';
     setUsedOptions({
       lighting: lightingKo,
       pov: povKo,
       color: colorKo,
-      details: additionalDetails
+      details: additionalDetails,
+      scene: sceneKo
     });
-  }, [selectedLighting, selectedPov, selectedColor, additionalDetails]);
+  }, [selectedLighting, selectedPov, selectedColor, additionalDetails, selectedScene, customScene]);
 
   const resultRef = useRef<HTMLDivElement>(null);
 
   const handleGenerate = useCallback(async () => {
+    // 장면 입력 체크
+    let sceneValue = selectedScene === 'custom' ? customScene.trim() : '';
+    if (selectedScene === 'custom' && !sceneValue) {
+      setError("장면을 입력해주세요. (예: 황량한 사막, 뜨거운 태양 아래 먼지가 날리는 장면)");
+      return;
+    }
     if (!additionalDetails.trim()) {
       setError("추가 세부 정보를 입력해주세요. (예: 숲속의 사슴, 미래 도시의 자동차)");
       return;
@@ -136,15 +149,16 @@ const App: React.FC = () => {
         lightingPromptEn,
         cameraPromptEn,
         colorPromptEn,
-        additionalDetails
+        additionalDetails,
+        sceneValue || undefined
       );
-      
+
       setGeneratedPrompt(fullPrompt);
       setKoreanPrompt(koreanPrompt);
 
       if (imageUrl) {
         setGeneratedImage(imageUrl);
-      } else {      
+      } else {
         setError('이미지 생성에 실패했습니다. 잠시 후 다시 시도해 주세요.');
       }
 
@@ -163,6 +177,7 @@ const App: React.FC = () => {
       <div className="w-full max-w-none px-0 py-8 box-border">
         <Header />
 
+
         <div className="w-full">
 
           {/* Left Column: Controls */}
@@ -170,20 +185,33 @@ const App: React.FC = () => {
 
             <div className="bg-dark/50 p-6 rounded-2xl border border-slate-800/60 shadow-xl backdrop-blur-sm">
               <OptionSelector
+                title="장면 설정 (Scene)"
+                options={SCENE_OPTIONS}
+                selectedId={selectedScene}
+                onSelect={setSelectedScene}
+                extraElement={
+                  <input
+                    className="flex-1 p-2 rounded border border-slate-700 bg-card text-slate-200 disabled:bg-slate-800/50 disabled:text-slate-500 w-full"
+                    type="text"
+                    placeholder="황량한 사막, 뜨거운 태양 아래 먼지가 날리는 장면"
+                    value={selectedScene === 'random' ? '-' : customScene === 'random' ? '' : customScene}
+                    onChange={e => setCustomScene(e.target.value)}
+                    disabled={selectedScene !== 'custom'}
+                  />
+                }
+              />
+              <OptionSelector
                 title="조명 (Lighting) - 영상의 분위기와 감정, 시간대, 공간감 설정"
                 options={LIGHTING_OPTIONS}
                 selectedId={selectedLighting}
                 onSelect={setSelectedLighting}
-                groupByCategory={true}
               />
-
 
               <OptionSelector
                 title="카메라 앵글 (Camera Angle) - 시각적 스토리텔링과 몰입, 인물·공간의 관계 표현"
                 options={ANGLE_OPTIONS}
                 selectedId={selectedPov}
                 onSelect={setSelectedPov}
-                groupByCategory={true}
               />
 
               <OptionSelector
@@ -221,6 +249,9 @@ const App: React.FC = () => {
               <div className="p-4 bg-card rounded-xl border border-slate-700/50">
                 <h4 className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-2">Selected Configuration</h4>
                 <div className="flex flex-wrap gap-2 text-xs text-slate-300">
+                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                    장면: {usedOptions ? usedOptions.scene : ''}
+                  </span>
                   <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
                     조명: {usedOptions ? usedOptions.lighting : ''}
                   </span>

@@ -3,6 +3,30 @@ import { LightingOption, CameraOption, ColorOption } from './types';
 import type { Example } from './types';
 
 
+// Scene Options (장면 설정)
+export const SCENE_OPTIONS = [
+  {
+    id: 'random',
+    label: '랜덤 (Random)',
+    value: 'Random',
+    description: 'AI가 영상의 분위기와 목적에 맞는 장면을 자동으로 선택합니다. 다양한 연출을 시도하거나 특별한 장면 효과가 필요할 때 활용하세요.',
+    examples: [
+      { label: '다양한 연출 시도' },
+      { label: '특별한 장면 효과 필요 시' }
+    ]
+  },
+  {
+    id: 'custom',
+    label: '직접입력 (Custom)',
+    value: 'Custom',
+    description: '직접 원하는 장면을 입력하여 세밀하게 연출할 수 있습니다.',
+    examples: [
+      { label: '황량한 사막, 뜨거운 태양 아래 먼지가 날리는 장면' },
+      { label: '비 내리는 도시의 네온사인' }
+    ]
+  }
+];
+
 // General Lighting Option
 const GENERAL_LIGHTING_OPTIONS: LightingOption[] = [
   {
@@ -375,6 +399,19 @@ const POV_ANGLE_OPTIONS: CameraOption[] = [
     ]
   },
   {
+    id: 'selfie',
+    label: '셀피 (Selfie)',
+    value: 'Selfie',
+    category: 'POV',
+    description: '카메라를 인물 자신이 직접 들고 촬영하는 시점. 친근함, 일상, 브이로그, SNS 콘텐츠에 적합합니다.',
+    previewUrl: '/images/angle/selfie.png',
+    examples: [
+      { label: '셀카 영상' },
+      { label: '브이로그' },
+      { label: 'SNS 콘텐츠' }
+    ]
+  },
+  {
     id: 'ots',
     label: '오버 더 숄더 (OTS)',
     value: 'Over The Shoulder',
@@ -496,11 +533,11 @@ const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
   },
   {
     id: 'micro',
-    label: '마이크로 (Micro Cinematography)',
-    value: 'Micro Cinematography',
+    label: '매크로 (Macro Cinematography)',
+    value: 'Macro Cinematography',
     category: 'Framing',
     description: '초접사로 미세한 질감과 패턴을 강조하는 앵글. 과학, 화장품, 자연 다큐 영상에 적합합니다.',
-    previewUrl: '/images/angle/micro.png',
+    previewUrl: '/images/angle/macro.png',
     examples: [
       { label: '자연 다큐멘터리' },
       { label: '화장품 광고' },
@@ -622,7 +659,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     label: '스노리캠 (SnorriCam)',
     value: 'SnorriCam',
     category: 'Movement',
-    description: '배우 몸에 카메라를 부착해 배경이 움직이는 독특한 시점. 심리적 불안, 몰입감을 주는 영상에 활용됩니다.',
+    description: '배우 몸에 카메라를 부착해 배경이 움직이는 독특한 시점. 배우가 느끼는 심리적 불안, 몰입감을 주는 영상에 활용됩니다.',
     previewUrl: '/images/angle/snorricam.png',
     examples: [
       { label: '심리 스릴러' },

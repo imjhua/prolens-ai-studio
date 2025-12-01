@@ -5,7 +5,8 @@ export const generateImage = async (
   lighting: string,
   camera: string,
   color: string,
-  details: string
+  details: string,
+  scene?: string
 ): Promise<{ imageUrl: string | null, fullPrompt: string, koreanPrompt: string, error?: string }> => {
   const apiKey = process.env.API_KEY;
   if (!apiKey) {
@@ -16,8 +17,10 @@ export const generateImage = async (
 
   // 1. Expand and Translate Scenario using Text Model (gemini-2.5-flash)
   // This turns keywords into a full English description and provides a Korean translation.
-  let scenarioEn = details;
-  let scenarioKo = details;
+  // 장면(scene)과 세부정보(details)를 합쳐서 시나리오로 사용
+  let scenarioInput = scene ? `${scene}, ${details}` : details;
+  let scenarioEn = scenarioInput;
+  let scenarioKo = scenarioInput;
 
   try {
     const textResponse = await ai.models.generateContent({
@@ -25,7 +28,7 @@ export const generateImage = async (
       contents: `
         You are a professional prompt engineer and translator.
 
-        User Input (Keywords or Short Description): "${details}"
+        User Input (Keywords or Short Description): "${scenarioInput}"
         Lighting Condition: "${lighting}"
         Camera Setup (Angle/Lens): "${camera}"
         Color Grading & Tone: "${color}"

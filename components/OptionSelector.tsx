@@ -17,21 +17,21 @@ interface Option {
   examples?: Example[];
 }
 
+
 interface OptionSelectorProps {
   title: string;
   options: Option[];
   selectedId: string;
   onSelect: (id: string) => void;
-  groupByCategory?: boolean;
+  extraElement?: React.ReactNode;
 }
-
 
 const OptionSelector: React.FC<OptionSelectorProps> = ({ 
   title, 
   options, 
   selectedId, 
   onSelect,
-  groupByCategory // 더 이상 사용하지 않음, 하위 호환만 유지
+  extraElement
 }) => {
   const renderOptions = (opts: Option[]) => (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
@@ -50,7 +50,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
           </button>
           {/* Custom Tooltip */}
           {(opt.description || (opt.examples && opt.examples.length > 0)) && (
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-72 p-3 bg-slate-900/95 backdrop-blur text-xs text-slate-200 rounded-lg border border-slate-700 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-96 p-3 bg-slate-900/95 backdrop-blur text-xs text-slate-200 rounded-lg border border-slate-700 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
               {opt.previewUrl && (
                 <div className="w-full h-40 mb-3 rounded-md overflow-hidden bg-slate-800 border border-slate-700">
                   <img src={opt.previewUrl} alt={opt.label} className="w-full h-full object-cover" />
@@ -106,6 +106,9 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
         {title}
       </h3>
       {renderGroupedOptions()}
+      {extraElement && (
+        <div className="mt-4">{extraElement}</div>
+      )}
     </div>
   );
 };
