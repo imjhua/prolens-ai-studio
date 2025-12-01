@@ -3,12 +3,18 @@
 import React from 'react';
 
 
+interface Example {
+  label: string;
+  description?: string;
+}
+
 interface Option {
   id: string;
   label: string;
   category?: string;
   description?: string;
   previewUrl?: string;
+  examples?: Example[];
 }
 
 interface OptionSelectorProps {
@@ -43,16 +49,25 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
             {opt.label}
           </button>
           {/* Custom Tooltip */}
-          {opt.description && (
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-72 p-3 bg-slate-900/95 backdrop-blur text-xs text-slate-200 rounded-lg border border-slate-700 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none text-center">
+          {(opt.description || (opt.examples && opt.examples.length > 0)) && (
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-72 p-3 bg-slate-900/95 backdrop-blur text-xs text-slate-200 rounded-lg border border-slate-700 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
               {opt.previewUrl && (
                 <div className="w-full h-40 mb-3 rounded-md overflow-hidden bg-slate-800 border border-slate-700">
                   <img src={opt.previewUrl} alt={opt.label} className="w-full h-full object-cover" />
                 </div>
               )}
-              <div className="px-1 font-medium leading-relaxed">
-                {opt.description}
-              </div>
+              {opt.description && (
+                <div className="px-1 font-medium leading-relaxed mb-2">
+                  {opt.description}
+                </div>
+              )}
+              {opt.examples && opt.examples.length > 0 && (
+                <ul className="text-left text-slate-300 mt-1 mb-0 px-2 list-disc list-inside">
+                  {opt.examples.map((ex, i) => (
+                    <li key={i}>{ex.label}</li>
+                  ))}
+                </ul>
+              )}
               {/* Tooltip Arrow */}
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-[1px] border-4 border-transparent border-t-slate-900/95"></div>
             </div>

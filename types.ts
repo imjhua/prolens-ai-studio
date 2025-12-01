@@ -1,3 +1,8 @@
+export interface Example {
+  label: string;
+  description?: string;
+}
+
 
 
 
@@ -8,6 +13,7 @@ export interface OptionBase {
   category?: string;
   description: string;
   previewUrl?: string;
+  examples?: Example[];
 }
 
 export type LightingOption = OptionBase;

@@ -170,7 +170,7 @@ const App: React.FC = () => {
 
             <div className="bg-dark/50 p-6 rounded-2xl border border-slate-800/60 shadow-xl backdrop-blur-sm">
               <OptionSelector
-                title="조명 (Lighting)"
+                title="조명 (Lighting) - 영상의 분위기와 감정, 시간대, 공간감"
                 options={LIGHTING_OPTIONS}
                 selectedId={selectedLighting}
                 onSelect={setSelectedLighting}
@@ -179,7 +179,7 @@ const App: React.FC = () => {
 
 
               <OptionSelector
-                title="카메라 앵글 (Camera Angle)"
+                title="카메라 앵글 (Camera Angle) - 시각적 스토리텔링과 몰입, 인물·공간의 관계 표현"
                 options={ANGLE_OPTIONS}
                 selectedId={selectedPov}
                 onSelect={setSelectedPov}

@@ -1,5 +1,6 @@
 
 import { LightingOption, CameraOption, ColorOption } from './types';
+import type { Example } from './types';
 
 
 // General Lighting Option
@@ -8,7 +9,11 @@ const GENERAL_LIGHTING_OPTIONS: LightingOption[] = [
     id: 'random',
     label: '랜덤 (Random)',
     value: 'Random',
-    description: 'AI가 가장 적절하거나 창의적인 조명을 무작위로 선택합니다. (활용: 창의적인 아이디어가 필요할 때)',
+    description: 'AI가 영상의 분위기와 목적에 맞는 조명을 자동으로 선택합니다. 다양한 연출을 시도하거나 특별한 조명 효과가 필요할 때 활용하세요.',
+    examples: [
+      { label: '창의적인 아이디어가 필요할 때' },
+      { label: '예상치 못한 조명 효과를 원할 때' }
+    ]
   },
 ];
 
@@ -19,72 +24,116 @@ export const NATURAL_LIGHTING_OPTIONS: LightingOption[] = [
     label: '아침 (Morning)',
     value: 'Morning',
     category: 'Natural',
-    description: '부드럽고 따뜻한 황금빛이 감도는 아침 햇살. 희망차고 상쾌한 분위기 연출. (활용: 아침 드라마, 건강 식품 광고, 희망적인 시작)',
-    previewUrl: '/images/lighting/natural/morning.png'
+    description: '따뜻하고 부드러운 아침 햇살이 공간을 감싸는 느낌. 상쾌하고 희망적인 분위기의 영상에 적합합니다.',
+    previewUrl: '/images/lighting/natural/morning.png',
+    examples: [
+      { label: '아침 드라마' },
+      { label: '건강 식품 광고' },
+      { label: '희망적인 시작 장면' }
+    ]
   },
   {
     id: 'noon',
     label: '정오 (Noon)',
     value: 'Noon',
     category: 'Natural',
-    description: '머리 위에서 내리쬐는 강렬하고 대비가 뚜렷한 직사광선. 생생하고 사실적인 느낌. (활용: 여행 사진, 야외 활동, 건축물 촬영)',
-    previewUrl: '/images/lighting/natural/noon.png'
+    description: '정오의 강렬한 태양빛이 선명한 그림자와 높은 대비를 만들어내는 조명. 사실적이고 생동감 있는 장면에 적합합니다.',
+    previewUrl: '/images/lighting/natural/noon.png',
+    examples: [
+      { label: '여행 사진' },
+      { label: '야외 활동' },
+      { label: '건축물 촬영' }
+    ]
   },
   {
     id: 'sunset',
     label: '석양 (Sunset)',
     value: 'Sunset',
     category: 'Natural',
-    description: '붉고 오렌지빛으로 물드는 낭만적인 골든 아워. 감성적이고 드라마틱한 분위기. (활용: 로맨틱 영화 포스터, 감성 룩북, 여행 브이로그)',
+    description: '붉은빛과 오렌지빛이 어우러진 낭만적인 석양 조명. 감성적이고 드라마틱한 영상 연출에 활용됩니다.',
     previewUrl: '/images/lighting/natural/sunset.png'
+    ,examples: [
+      { label: '로맨틱 영화 포스터' },
+      { label: '감성 룩북' },
+      { label: '여행 브이로그' }
+    ]
   },
   {
     id: 'silhouette',
     label: '실루엣 (Silhouette)',
     value: 'Silhouette',
     category: 'Natural',
-    description: '피사체를 어둡게 처리하고 배경을 밝게 하여 윤곽선을 강조. 신비롭고 극적인 효과. (활용: 앨범 커버, 미스터리 스릴러, 예술 사진)',
+    description: '밝은 배경과 어두운 피사체의 윤곽이 강조되는 조명. 신비롭고 극적인 장면이나 인상적인 오프닝에 적합합니다.',
     previewUrl: '/images/lighting/natural/silhouette.png'
+    ,examples: [
+      { label: '앨범 커버' },
+      { label: '미스터리 스릴러' },
+      { label: '예술 사진' }
+    ]
   },
   {
     id: 'night',
     label: '밤 (Night)',
     value: 'Night',
     category: 'Natural',
-    description: '달빛이나 가로등에 의존하는 어두운 조명. 차분하고 고요하거나 미스터리한 분위기. (활용: 공포 영화, 느와르, 감성적인 야경 사진)',
+    description: '달빛 또는 인공광에 의존하는 어두운 밤 조명. 고요함, 신비로움, 혹은 미스터리한 분위기의 영상에 어울립니다.',
     previewUrl: '/images/lighting/natural/night.png'
+    ,examples: [
+      { label: '공포 영화' },
+      { label: '느와르' },
+      { label: '감성적인 야경 사진' }
+    ]
   },
   {
     id: 'moonlight',
     label: '달빛 (Moonlight)',
     value: 'Moonlight',
     category: 'Natural',
-    description: '맑은 밤하늘에서 달빛이 은은하게 비추는 조명. 신비롭고 몽환적이며 서정적인 분위기. (활용: 동화, 로맨틱 영화, 밤의 정원, 감성적인 장면)',
+    description: '맑은 밤하늘의 은은한 달빛이 공간을 감싸는 조명. 몽환적이고 서정적인 영상미를 연출할 때 사용합니다.',
     previewUrl: '/images/lighting/natural/moonlight.png'
+    ,examples: [
+      { label: '동화' },
+      { label: '로맨틱 영화' },
+      { label: '밤의 정원' }
+    ]
   },
   {
     id: 'cloudy',
     label: '흐린날 (Cloudy)',
     value: 'Cloudy',
     category: 'Natural',
-    description: '구름에 분산되어 그림자가 부드러운 확산광. 차분하고 우울하거나 부드러운 느낌. (활용: 인물 프로필, 차분한 분위기의 패션 화보)',
+    description: '구름에 의해 부드럽게 확산된 자연광. 그림자가 약하고 차분한 분위기의 영상에 적합합니다.',
     previewUrl: '/images/lighting/natural/cloudy.png',
+    examples: [
+      { label: '인물 프로필' },
+      { label: '차분한 분위기의 패션 화보' }
+    ]
   },
   {
     id: 'rainy',
     label: '비오는날 (Rainy)',
     value: 'Rainy',
     category: 'Natural',
-    description: '젖은 지면의 반사와 흐린 하늘의 조명. 우울하고 감성적인 느와르 분위기. (활용: 이별 노래 뮤직비디오, 범죄 영화, 감성 에세이 표지)',
+    description: '흐린 하늘과 젖은 지면의 반사가 어우러진 조명. 감성적이고 우울한 영상 분위기 연출에 활용됩니다.',
     previewUrl: '/images/lighting/natural/rainy.png'
+    ,examples: [
+      { label: '이별 노래 뮤직비디오' },
+      { label: '범죄 영화' },
+      { label: '감성 에세이 표지' }
+    ]
   },
   {
     id: 'snowy',
     label: '눈오는날 (Snowy)',
     value: 'Snowy',
     category: 'Natural',
-    description: '하얗게 내리는 눈과 밝은 반사광이 만들어내는 청명하고 몽환적인 분위기. (활용: 겨울 광고, 로맨틱 영화, 감성적인 풍경 사진)',
+    description: '눈이 내리는 밝고 청명한 분위기의 조명. 겨울 특유의 몽환적이고 깨끗한 영상미에 적합합니다.',
     previewUrl: '/images/lighting/natural/snowy.png'
+    ,examples: [
+      { label: '겨울 광고' },
+      { label: '로맨틱 영화' },
+      { label: '감성적인 풍경 사진' }
+    ]
   },
 ];
 
@@ -95,112 +144,182 @@ export const ARTIFICIAL_LIGHTING_OPTIONS: LightingOption[] = [
     label: '하이키 (High Key)',
     value: 'High Key',
     category: 'Artificial',
-    description: '전체적으로 밝고 부드러운 조명을 사용하여 그림자를 최소화하는 스타일. 쾌활하고 긍정적인 분위기. (활용: 화장품 광고, 아기 사진, 웨딩 촬영)',
-    previewUrl: '/images/lighting/artificial/highkey.png'
+    description: '밝고 부드러운 조명으로 그림자를 최소화해 쾌활하고 긍정적인 분위기를 연출합니다. 밝은 광고, 인물, 패션 영상에 적합합니다.',
+    previewUrl: '/images/lighting/artificial/highkey.png',
+    examples: [
+      { label: '밝은 화장품 광고' },
+      { label: '패션 화보' },
+      { label: '쾌활한 가족 영상' }
+    ]
   },
   {
     id: 'lowkey',
     label: '로우키 (Low Key)',
     value: 'Low Key',
     category: 'Artificial',
-    description: '어두운 톤을 주조로 하여 대비를 강조하고 그림자를 많이 사용하는 스타일. 진지하고 미스터리한 분위기. (활용: 연극, 공연, 범죄 스릴러)',
-    previewUrl: '/images/lighting/artificial/lowkey.png'
+    description: '어두운 조명과 강한 대비로 미스터리하고 진지한 분위기를 강조합니다. 드라마, 스릴러, 예술 영상에 활용됩니다.',
+    previewUrl: '/images/lighting/artificial/lowkey.png',
+    examples: [
+      { label: '느와르 영화' },
+      { label: '스릴러 예고편' },
+      { label: '예술 사진' }
+    ]
   },
   {
     id: 'hard',
     label: '하드 (Hard Light)',
     value: 'Hard Light',
     category: 'Artificial',
-    description: '그림자가 뚜렷하고 경계가 선명한 강한 조명. 강렬하고 드라마틱한 인상을 줌. (활용: 스포츠 사진, 강한 카리스마가 필요한 인물 사진)',
-    previewUrl: '/images/lighting/artificial/hard.png'
+    description: '경계가 뚜렷한 강한 조명으로 강렬하고 드라마틱한 인상을 줍니다. 카리스마, 액션, 스포츠 영상에 적합합니다.',
+    previewUrl: '/images/lighting/artificial/hard.png',
+    examples: [
+      { label: '액션 영화 포스터' },
+      { label: '스포츠 광고' },
+      { label: '강렬한 인물 사진' }
+    ]
   },
   {
     id: 'soft',
     label: '소프트 (Soft Light)',
     value: 'Soft Light',
     category: 'Artificial',
-    description: '그림자의 경계가 흐릿하고 부드러운 조명. 인물을 화사하고 자연스럽게 표현. (활용: 뷰티 유튜버 썸네일, 웨딩 스냅, 가족 사진)',
-    previewUrl: '/images/lighting/artificial/soft.png'
+    description: '경계가 흐릿하고 부드러운 조명으로 인물의 피부와 표정을 자연스럽고 화사하게 표현합니다. 뷰티, 웨딩, 가족 영상에 활용됩니다.',
+    previewUrl: '/images/lighting/artificial/soft.png',
+    examples: [
+      { label: '웨딩 사진' },
+      { label: '뷰티 유튜브 영상' },
+      { label: '가족 사진' }
+    ]
   },
   {
     id: 'key',
     label: '키 라이트 (Key Light)',
     value: 'Key Light',
     category: 'Artificial',
-    description: '피사체의 형태와 입체감을 결정하는 가장 주된 광원. (활용: 모든 스튜디오 촬영의 기본 조명 설정)',
-    previewUrl: '/images/lighting/artificial/key.png'
+    description: '피사체의 형태와 입체감을 결정하는 주조명. 인물, 제품 등 주요 피사체를 강조하는 영상에 필수적입니다.',
+    previewUrl: '/images/lighting/artificial/key.png',
+    examples: [
+      { label: '제품 광고' },
+      { label: '인물 인터뷰' },
+      { label: '유튜브 토크쇼' }
+    ]
   },
   {
     id: 'fill',
     label: '필 라이트 (Fill Light)',
     value: 'Fill Light',
     category: 'Artificial',
-    description: '그림자 부분을 밝혀 대비를 줄여주는 보조 조명. 디테일을 살리는 데 사용. (활용: 제품의 디테일을 명확히 보여줘야 하는 쇼핑몰 촬영)',
-    previewUrl: '/images/lighting/artificial/fill.png'
+    description: '그림자 부분을 밝혀주어 전체적인 밝기와 디테일을 조절하는 보조 조명. 자연스러운 영상미와 디테일 강조에 적합합니다.',
+    previewUrl: '/images/lighting/artificial/fill.png',
+    examples: [
+      { label: '인물 사진' },
+      { label: '제품 촬영' },
+      { label: '실내 인터뷰' }
+    ]
   },
   {
     id: 'back',
     label: '백 라이트 (Back Light)',
     value: 'Back Light',
     category: 'Artificial',
-    description: '피사체 뒤에서 비추는 조명. 배경과 분리하고 윤곽을 강조(헤어 라이트). (활용: 인물과 배경을 분리할 때, 헤어 제품 광고)',
-    previewUrl: '/images/lighting/artificial/back.png'
+    description: '피사체 뒤에서 비추는 조명으로 인물이나 사물을 배경과 분리하고 윤곽을 강조합니다. 입체감과 공간감을 더하는 영상에 활용됩니다.',
+    previewUrl: '/images/lighting/artificial/back.png',
+    examples: [
+      { label: '뮤직비디오' },
+      { label: '무대 공연' },
+      { label: '입체감 강조 영상' }
+    ]
   },
   {
     id: 'rim',
     label: '림 라이트 (Rim Light)',
     value: 'Rim Light',
     category: 'Artificial',
-    description: '피사체의 가장자리를 밝게 빛나게 하여 입체감을 주는 조명. 실루엣 강조. (활용: 스포츠 프로필, 자동차 광고, 피사체 라인 강조)',
-    previewUrl: '/images/lighting/artificial/rim.png'
+    description: '피사체의 가장자리를 밝게 비추어 실루엣과 입체감을 강조하는 조명. 역동적이고 세련된 영상 연출에 적합합니다.',
+    previewUrl: '/images/lighting/artificial/rim.png',
+    examples: [
+      { label: '패션 영상' },
+      { label: '스포츠 광고' },
+      { label: '실루엣 강조 영상' }
+    ]
   },
   {
     id: 'top',
     label: '탑 라이트 (Top Light)',
     value: 'Top Light',
     category: 'Artificial',
-    description: '머리 바로 위에서 비추는 조명. 신비롭거나 위압적인 느낌, 또는 고립된 느낌. (활용: 심문 장면, 공포 영화, 신적인 존재 표현)',
-    previewUrl: '/images/lighting/artificial/top.png'
+    description: '머리 위에서 수직으로 비추는 조명으로 신비롭거나 위압적인 분위기, 고립감을 연출할 때 사용합니다.',
+    previewUrl: '/images/lighting/artificial/top.png',
+    examples: [
+      { label: '공포 영화' },
+      { label: '고립감 연출' },
+      { label: '신비로운 장면' }
+    ]
   },
   {
     id: 'color',
     label: '컬러 라이팅 (Color)',
     value: 'Color Lighting',
     category: 'Artificial',
-    description: '다채로운 색상의 빛을 투사하여 예술적이고 창의적인 분위기를 연출. (활용: 뮤직비디오, 사이버펑크 스타일, 예술 화보)',
-    previewUrl: '/images/lighting/artificial/color.png'
+    description: '다양한 색상의 조명으로 독특하고 예술적인 분위기를 연출합니다. 뮤직비디오, 예술 영상, 파티 신 등에 적합합니다.',
+    previewUrl: '/images/lighting/artificial/color.png',
+    examples: [
+      { label: '뮤직비디오' },
+      { label: '파티 신' },
+      { label: '예술 단편' }
+    ]
   },
   {
     id: 'ring',
     label: '링 라이팅 (Ring)',
     value: 'Ring Lighting',
     category: 'Artificial',
-    description: '렌즈 주위를 감싸는 원형 조명. 눈동자에 캐치라이트를 만들고 그림자 없는 뷰티 촬영에 적합. (활용: 메이크업 튜토리얼, 눈동자 강조 근접 촬영)',
-    previewUrl: '/images/lighting/artificial/ring.png'
+    description: '렌즈 주위를 감싸는 원형 조명으로 그림자 없이 인물의 얼굴을 밝게 비추고 눈동자에 캐치라이트를 더합니다. 뷰티, 메이크업 영상에 활용됩니다.',
+    previewUrl: '/images/lighting/artificial/ring.png',
+    examples: [
+      { label: '메이크업 튜토리얼' },
+      { label: '뷰티 유튜브' },
+      { label: '셀카 촬영' }
+    ]
   },
   {
     id: 'silhouette',
     label: '실루엣 (Silhouette)',
     value: 'Silhouette',
     category: 'Artificial',
-    description: '인공광을 배경에 비추어 피사체를 검은 윤곽으로 표현. (활용: 댄스 영상, 실루엣 애니메이션, 오프닝 시퀀스)',
-    previewUrl: '/images/lighting/artificial/silhouette.png'
+    description: '강한 인공광을 배경에 비추어 피사체를 검은 윤곽으로 표현합니다. 인상적이고 극적인 오프닝, 댄스 영상에 적합합니다.',
+    previewUrl: '/images/lighting/artificial/silhouette.png',
+    examples: [
+      { label: '댄스 영상' },
+      { label: '뮤직비디오 오프닝' },
+      { label: '극적인 광고' }
+    ]
   },
   {
     id: 'flare',
     label: '렌즈 플레어 (Lens Flare)',
     value: 'Lens Flare',
     category: 'Artificial',
-    description: '렌즈에 강한 빛이 들어와 생기는 빛 번짐 효과. 몽환적이고 영화 같은 느낌. (활용: 로맨틱 드라마, 회상 장면, 야외 인물 촬영)',
-    previewUrl: '/images/lighting/artificial/flare.png'
+    description: '강한 빛이 렌즈에 들어와 생기는 번짐 효과로 몽환적이고 영화 같은 분위기를 연출합니다. 회상, 로맨스, 야외 영상에 활용됩니다.',
+    previewUrl: '/images/lighting/artificial/flare.png',
+    examples: [
+      { label: '로맨스 영화' },
+      { label: '회상 장면' },
+      { label: '야외 촬영' }
+    ]
   },
   {
     id: 'diffused',
     label: '디퓨즈드 (Diffused)',
     value: 'Diffused Lighting',
     category: 'Artificial',
-    description: '부드럽고 고르게 퍼지는 빛을 제공하여, 그림자를 최소화하는 조명. 온화하고 편안한 느낌. (활용: 인터뷰 영상, 실내 인테리어 촬영)',
-    previewUrl: '/images/lighting/artificial/diffused.png'
+    description: '부드럽고 고르게 퍼지는 빛으로 그림자를 최소화해 온화하고 편안한 분위기를 만듭니다. 인터뷰, 실내, 인테리어 영상에 적합합니다.',
+    previewUrl: '/images/lighting/artificial/diffused.png',
+    examples: [
+      { label: '실내 인테리어 영상' },
+      { label: '인터뷰 촬영' },
+      { label: '편안한 분위기 연출' }
+    ]
   },
 ];
 
@@ -230,181 +349,346 @@ export const LIGHTING_OPTIONS: LightingOption[] = [
   })),
 ];
 
-export const ANGLE_OPTIONS: CameraOption[] = [
-  { 
-    id: 'random', 
+
+const POV_ANGLE_OPTIONS: CameraOption[] = [
+  {
+    id: 'random',
     label: '랜덤 (Random)',
     value: 'Random',
-    description: 'AI가 상황에 맞는 가장 드라마틱한 앵글을 선택합니다. (활용: 의외의 결과를 얻고 싶을 때)',
+    description: 'AI가 영상의 분위기와 목적에 맞는 카메라 앵글을 자동으로 선택합니다. 다양한 연출을 시도하거나 특별한 시점이 필요할 때 활용하세요.',
+    examples: [
+      { label: '다양한 연출 시도' },
+      { label: '특별한 시점 필요 시' }
+    ]
   },
   {
     id: 'fpv',
-    label: 'FPV (First Person View)',
-    value: 'FPV',
-    description: '1인칭 전방카메라를 도입해 시각 정보 처리. 캐릭터의 눈을 통해 세상을 바라봄. 강한 몰입감과 주관적인 경험. (활용: FPS 게임, 체험형 콘텐츠, 브이로그)',
-    previewUrl: '/images/angle/fpv.png'
+    label: '1인칭 시점 (FPV)',
+    value: 'First Person View',
+    category: 'POV',
+    description: '인물의 눈 위치에서 촬영해 몰입감과 현장감을 극대화하는 시점. 체험형, 게임, 브이로그 영상에 적합합니다.',
+    previewUrl: '/images/angle/fpv.png',
+    examples: [
+      { label: '게임 플레이 영상' },
+      { label: '체험형 광고' },
+      { label: '브이로그' }
+    ]
+  },
+  {
+    id: 'ots',
+    label: '오버 더 숄더 (OTS)',
+    value: 'Over The Shoulder',
+    category: 'POV',
+    description: '인물의 어깨 너머로 상대방을 바라보는 시점. 관계, 대화, 상호작용을 강조하는 영상에 활용됩니다.',
+    previewUrl: '/images/angle/ots.png',
+    examples: [
+      { label: '영화 대화 장면' },
+      { label: '상호작용 강조' },
+      { label: '관계 중심 영상' }
+    ]
   },
   {
     id: 'drone',
-    label: '드론 (Drone View)',
+    label: '드론/항공 (Drone View)',
     value: 'Drone View',
-    description: '하늘을 나는 드론에서 내려다보는 시점. 광활한 풍경이나 역동적인 항공 샷. (활용: 여행 홍보 영상, 대규모 행사 전경, 추격전)',
-    previewUrl: '/images/angle/drone.png'
-  },
-  { 
-    id: 'low', 
-    label: '로우 앵글 (Low Angle)',
-    value: 'Low Angle',
-    description: '피사체를 아래에서 위로 올려다보는 각도. 피사체를 웅장하고 위압적으로 보이게 함. (활용: 영웅 캐릭터, 거대한 건축물, 권위적인 인물 묘사)',
-    previewUrl: '/images/angle/low.png'
-  },
-  { 
-    id: 'high', 
-    label: '하이 앵글 (High Angle)',
-    value: 'High Angle',
-    description: '피사체를 위에서 아래로 내려다보는 각도. 피사체를 작고 약해 보이게 하거나 귀여움을 강조. (활용: 반려동물 사진, 아이들 촬영, 공포 영화의 피해자 시점)',
-    previewUrl: '/images/angle/high.png'
-  },
-  { 
-    id: 'overhead', 
-    label: '오버헤드 (Overhead)',
-    value: 'Overhead',
-    description: '머리 바로 위 수직에서 내려다보는 갓 뷰(God\'s view). 전체적인 배치나 패턴 강조. (활용: 음식 항공샷, 도시 계획 조감도, 테이블 세팅)',
-    previewUrl: '/images/angle/overhead.png'
-  },
-  { 
-    id: 'handheld', 
-    label: '핸드헬드 (Hand Held)',
-    value: 'Hand Held',
-    description: '손으로 카메라를 들고 찍은 듯한 흔들림. 현장감, 생동감 있고 현실에서 바라보는 느낌. (활용: 재난 영화, 전쟁 다큐멘터리, 뉴스 현장)',
-    previewUrl: '/images/angle/handheld.png'
-  },
-  { 
-    id: 'closeup', 
-    label: '클로즈업 (Close-up)',
-    value: 'Close-up',
-    description: '피사체에 가깝게 다가가 세부 묘사에 집중. 감정 표현이나 디테일 강조. (활용: 감정 연기 포착, 보석 광고, 곤충 접사)',
-    previewUrl: '/images/angle/closeup.png'
+    category: 'POV',
+    description: '하늘에서 내려다보는 항공 시점으로 공간의 스케일과 역동성을 강조합니다. 여행, 행사, 액션 영상에 적합합니다.',
+    previewUrl: '/images/angle/drone.png',
+    examples: [
+      { label: '여행 영상' },
+      { label: '행사 스케일 강조' },
+      { label: '액션 장면' }
+    ]
   },
   {
-    id: 'extreme-closeup',
-    label: '익스트림 클로즈업 (Extreme Close-up)',
-    value: 'Extreme Close-up',
-    description: '피사체의 극히 일부분(눈, 입, 손 등)을 화면 가득히 담아 극도의 디테일과 감정을 강조하는 샷. (활용: 감정의 극대화, 디테일 강조, 긴장감 연출)',
-    previewUrl: '/images/angle/extreme-closeup.png'
+    id: 'handheld',
+    label: '핸드헬드 (Handheld)',
+    value: 'Handheld',
+    category: 'POV',
+    description: '손으로 직접 들고 촬영한 듯한 자연스러운 흔들림이 특징. 리얼리티, 다큐, 현장감 있는 영상에 활용됩니다.',
+    previewUrl: '/images/angle/handheld.png',
+    examples: [
+      { label: '현장감 있는 다큐' },
+      { label: '리얼리티 프로그램' },
+      { label: '현장 촬영' }
+    ]
   },
-  { 
-    id: 'micro', 
-    label: '마이크로 시네마그래피',
-    value: 'Micro Cinematography',
-    description: '초근접 촬영. 눈으로 보기 힘든 미세한 질감과 패턴을 거대하게 표현. (활용: 과학 다큐멘터리, 화장품 제형 강조, 자연의 미세 패턴)',
-    previewUrl: '/images/angle/micro.png'
-  },
-  { 
-    id: 'ots', 
-    label: '오버 더 숄더 (OTS)',
-    value: 'Over The Shoulder',
-    description: '어깨 너머로 상대방을 바라보는 앵글. 대화 장면에서 관계성을 보여줌. 상호작용 또는 관계를 강조. (활용: 영화 대화 장면, 인터뷰, 드라마틱한 대치 상황)',
-    previewUrl: '/images/angle/ots.png'
-  },
+];
+
+const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
   {
-    id: 'bust',
-    label: '바스트샷 (Bust Shot)',
-    value: 'Bust Shot',
-    description: '가슴 위쪽부터 머리까지를 프레임에 담는 샷. 인물의 표정, 감정, 상반신의 디테일을 강조. (활용: 인터뷰, 감정 연기, 인물 중심의 장면)',
-    previewUrl: '/images/angle/bust.png'
-  },
-  {
-    id: 'waist',
-    label: '웨이스트샷 (Waist Shot)',
-    value: 'Waist Shot',
-    description: '피사체의 허리 위쪽부터 머리까지를 프레임에 담는 샷. 인물의 표정과 상반신 동작을 강조. (활용: 인터뷰, 토크쇼, 일상 대화, 상반신 중심의 연기)',
-    previewUrl: '/images/angle/waist.png'
+    id: 'extreme-long',
+    label: '익스트림 롱샷 (Extreme Long Shot)',
+    value: 'Extreme Long Shot',
+    category: 'Framing',
+    description: '매우 먼 거리에서 촬영해 배경과 공간의 스케일을 강조합니다. 오프닝, 대자연, 전경 영상에 적합합니다.',
+    previewUrl: '/images/angle/extreme-long.png',
+    examples: [
+      { label: '영화 오프닝' },
+      { label: '대자연 풍경' },
+      { label: '전경 강조 영상' }
+    ]
   },
   {
     id: 'full',
     label: '풀샷 (Full Shot)',
     value: 'Full Shot',
-    description: '피사체의 전신이 프레임에 들어오도록 촬영하는 기법. 동작, 의상, 배경까지 모두 보여줌. 배경이나 장소의 설정을 보여주어 피사체의 위치나 상황을 이해할 수 있도록 한다. (활용: 패션 화보, 무용, 연극, 단체 사진)',
-    previewUrl: '/images/angle/full.png'
-  },
-  { 
-    id: 'wide', 
-    label: '와이드 (Wide)',
-    value: 'Wide Angle',
-    description: '공간과 거리감 기준. 전체적인 환경이나 배경을 보여주어 장면의 분위기와 위치 설정. (활용: 풍경 사진, 부동산 내부 촬영, 대규모 군중 씬)',
-    previewUrl: '/images/angle/wide.png'
+    category: 'Framing',
+    description: '피사체의 전신이 프레임에 들어오도록 촬영해 동작과 배경을 함께 보여줍니다. 패션, 무용, 단체 영상에 활용됩니다.',
+    previewUrl: '/images/angle/full.png',
+    examples: [
+      { label: '패션쇼 영상' },
+      { label: '무용 공연' },
+      { label: '단체 사진' }
+    ]
   },
   {
-    id: 'extreme-long',
-    label: '익스트림 롱샷 (Extreme Long Shot)',
-    value: 'Extreme Long Shot',
-    description: '매우 먼 거리에서 촬영하여 피사체가 작게 보이고, 넓은 배경이나 환경을 강조하는 샷. 장면의 스케일, 분위기, 위치 정보를 전달. (활용: 영화 오프닝, 대자연, 전쟁 장면, 도시 전경)',
-    previewUrl: '/images/angle/extreme-long.png'
+    id: 'waist',
+    label: '웨이스트샷 (Waist Shot)',
+    value: 'Waist Shot',
+    category: 'Framing',
+    description: '허리 위부터 머리까지 프레임에 담아 상반신 동작과 표정을 강조합니다. 토크쇼, 일상 대화 영상에 적합합니다.',
+    previewUrl: '/images/angle/waist.png',
+    examples: [
+      { label: '토크쇼' },
+      { label: '일상 대화' },
+      { label: '상반신 인터뷰' }
+    ]
+  },
+  {
+    id: 'bust',
+    label: '바스트샷 (Bust Shot)',
+    value: 'Bust Shot',
+    category: 'Framing',
+    description: '가슴 위부터 머리까지 프레임에 담아 감정과 표정을 집중적으로 보여줍니다. 인터뷰, 인물 중심 영상에 활용됩니다.',
+    previewUrl: '/images/angle/bust.png',
+    examples: [
+      { label: '인물 인터뷰' },
+      { label: '감정 연기' },
+      { label: '프로필 영상' }
+    ]
+  },
+  {
+    id: 'closeup',
+    label: '클로즈업 (Close-up)',
+    value: 'Close-up',
+    category: 'Framing',
+    description: '피사체에 가까이 다가가 감정과 디테일을 강조하는 앵글. 감정 연기, 광고, 인물 영상에 적합합니다.',
+    previewUrl: '/images/angle/closeup.png',
+    examples: [
+      { label: '감정 연기' },
+      { label: '화장품 광고' },
+      { label: '인물 집중 영상' }
+    ]
+  },
+  {
+    id: 'extreme-closeup',
+    label: '익스트림 클로즈업 (Extreme Close-up)',
+    value: 'Extreme Close-up',
+    category: 'Framing',
+    description: '눈, 입 등 극히 일부분을 극적으로 강조해 긴장감과 디테일을 극대화합니다. 감정, 서스펜스 영상에 활용됩니다.',
+    previewUrl: '/images/angle/extreme-closeup.png',
+    examples: [
+      { label: '서스펜스 영화' },
+      { label: '눈물 연기' },
+      { label: '디테일 강조' }
+    ]
+  },
+  {
+    id: 'micro',
+    label: '마이크로 (Micro Cinematography)',
+    value: 'Micro Cinematography',
+    category: 'Framing',
+    description: '초접사로 미세한 질감과 패턴을 강조하는 앵글. 과학, 화장품, 자연 다큐 영상에 적합합니다.',
+    previewUrl: '/images/angle/micro.png',
+    examples: [
+      { label: '자연 다큐멘터리' },
+      { label: '화장품 광고' },
+      { label: '과학 실험 영상' }
+    ]
+  },
+];
+
+const ANGLE_ANGLE_OPTIONS: CameraOption[] = [
+  {
+    id: 'high',
+    label: '하이 앵글 (High Angle)',
+    value: 'High Angle',
+    category: 'Angle',
+    description: '위에서 아래로 내려다보는 각도로 피사체의 약함, 귀여움, 위축된 느낌을 강조합니다. 동물, 아이, 공포 영상에 활용됩니다.',
+    previewUrl: '/images/angle/high.png',
+    examples: [
+      { label: '동물 영상' },
+      { label: '공포 영화' },
+      { label: '아이 촬영' }
+    ]
+  },
+  {
+    id: 'low',
+    label: '로우 앵글 (Low Angle)',
+    value: 'Low Angle',
+    category: 'Angle',
+    description: '아래에서 위로 올려다보는 각도로 위엄, 힘, 영웅성을 강조합니다. 영웅, 건축물, 웅장한 영상에 적합합니다.',
+    previewUrl: '/images/angle/low.png',
+    examples: [
+      { label: '영웅 영화' },
+      { label: '건축물 촬영' },
+      { label: '웅장한 장면' }
+    ]
+  },
+  {
+    id: 'overhead',
+    label: '오버헤드 (Overhead)',
+    value: 'Overhead',
+    category: 'Angle',
+    description: '수직으로 내려다보는 각도로 패턴, 배치, 공간 구성을 강조합니다. 음식, 도시, 테이블 영상에 활용됩니다.',
+    previewUrl: '/images/angle/overhead.png',
+    examples: [
+      { label: '음식 촬영' },
+      { label: '도시 항공샷' },
+      { label: '테이블 연출' }
+    ]
   },
   {
     id: 'dutch',
-    label: '더치 앵글샷 (Dutch Angle)',
+    label: '더치 앵글 (Dutch Angle)',
     value: 'Dutch Angle',
-    description: '카메라를 기울여 수평선이 비스듬하게 보이도록 촬영하는 기법. 불안, 혼란, 긴장감, 비정상적인 심리 상태를 시각적으로 표현. (활용: 스릴러, 공포, 심리극, 액션 장면)',
-    previewUrl: '/images/angle/dutch.png'
+    category: 'Angle',
+    description: '카메라를 기울여 불안, 혼란, 긴장감을 연출하는 앵글. 스릴러, 심리극, 액션 영상에 적합합니다.',
+    previewUrl: '/images/angle/dutch.png',
+    examples: [
+      { label: '스릴러 영화' },
+      { label: '심리극' },
+      { label: '액션 장면' }
+    ]
   },
-  {
-    id: 'crane',
-    label: '크레인샷 (Crane Shot)',
-    value: 'Crane Shot',
-    description: '크레인이나 지미집 등 장비를 이용해 카메라를 위아래, 앞뒤, 좌우로 자유롭게 이동시키며 촬영하는 기법. 웅장한 스케일, 공간의 입체감, 극적인 전환을 연출. (활용: 영화 오프닝, 대규모 군중 장면, 뮤직비디오)',
-    previewUrl: '/images/angle/crane.png'
-  },
+];
+
+const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
   {
     id: 'pan',
     label: '팬샷 (Pan Shot)',
     value: 'Pan Shot',
-    description: '카메라가 고정된 위치에서 좌우로 회전시키며 넓은 공간이나 움직임을 따라가는 촬영 기법. 공간의 흐름, 전환, 움직임 강조. (활용: 스포츠 중계, 풍경 소개, 액션 장면)',
-    previewUrl: '/images/angle/pan.png'
+    category: 'Movement',
+    description: '카메라를 좌우로 회전시켜 공간감, 움직임, 장면 전환을 강조합니다. 스포츠, 풍경, 액션 영상에 활용됩니다.',
+    previewUrl: '/images/angle/pan.png',
+    examples: [
+      { label: '스포츠 중계' },
+      { label: '풍경 영상' },
+      { label: '장면 전환' }
+    ]
   },
   {
     id: 'tilt',
     label: '틸트 (Tilt Shot)',
     value: 'Tilt Shot',
-    description: '카메라가 고정된 위치에서 상하로 기울여 위아래로 움직임을 보여주는 촬영 기법. 높이감, 위압감, 시선의 이동을 강조. (활용: 고층 건물, 인물의 위엄, 시점 전환)',
-    previewUrl: '/images/angle/tilt.png'
+    category: 'Movement',
+    description: '카메라를 상하로 기울여 높이감, 위압감, 시선 이동을 표현합니다. 건물, 인물, 시점 전환 영상에 적합합니다.',
+    previewUrl: '/images/angle/tilt.png',
+    examples: [
+      { label: '건물 촬영' },
+      { label: '시선 이동 연출' },
+      { label: '위압감 강조' }
+    ]
   },
-  { 
-    id: 'tracking', 
-    label: '트래킹 (Tracking)',
+  {
+    id: 'tracking',
+    label: '트래킹 (Tracking Shot)',
     value: 'Tracking Shot',
-    description: '카메라가 움직이는 피사체를 따라가며 촬영. 속도감과 이동의 흐름을 표현. (활용: 자동차 경주, 마라톤 중계, 액션 추격신)',
-    previewUrl: '/images/angle/tracking.png'
+    category: 'Movement',
+    description: '카메라가 피사체를 따라 이동해 속도감과 역동성을 강조합니다. 경주, 추격, 액션 영상에 활용됩니다.',
+    previewUrl: '/images/angle/tracking.png',
+    examples: [
+      { label: '추격 장면' },
+      { label: '경주 영상' },
+      { label: '액션 영화' }
+    ]
   },
-  { 
-    id: '50mm', 
-    label: '50mm 렌즈',
-    value: '50mm Lens',
-    description: '사람의 눈과 가장 유사한 원근감. 왜곡 없이 자연스럽고 편안한 시각. (활용: 일상 스냅, 인물 포트레이트, 여행 기록)',
-    previewUrl: '/images/angle/50mm.png'
+  {
+    id: 'crane',
+    label: '크레인샷 (Crane Shot)',
+    value: 'Crane Shot',
+    category: 'Movement',
+    description: '크레인 등 장비로 카메라를 입체적으로 이동시켜 웅장함과 공간감, 극적인 전환을 연출합니다. 오프닝, 군중, 뮤직비디오에 적합합니다.',
+    previewUrl: '/images/angle/crane.png',
+    examples: [
+      { label: '영화 오프닝' },
+      { label: '군중 장면' },
+      { label: '뮤직비디오' }
+    ]
   },
-  { 
-    id: 'snorricam', 
+  {
+    id: 'snorricam',
     label: '스노리캠 (SnorriCam)',
     value: 'SnorriCam',
-    description: '배우의 몸에 카메라를 부착하여 배우는 고정되고 배경이 움직이는 기법. 심리적 불안감 표현. (활용: 술 취한 장면, 심리적 공황 상태 묘사, 뮤직비디오)',
-    previewUrl: '/images/angle/snorricam.png'
+    category: 'Movement',
+    description: '배우 몸에 카메라를 부착해 배경이 움직이는 독특한 시점. 심리적 불안, 몰입감을 주는 영상에 활용됩니다.',
+    previewUrl: '/images/angle/snorricam.png',
+    examples: [
+      { label: '심리 스릴러' },
+      { label: '몰입감 연출' },
+      { label: '특이한 시점 영상' }
+    ]
   },
-  { 
-    id: 'docu', 
-    label: '리얼리스틱 다큐멘터리',
-    value: 'Realistic Documentary',
-    description: '꾸미지 않은 사실적인 시선. 있는 그대로의 현실을 관찰하는 느낌. (활용: 휴먼 다큐, 뉴스 보도 영상, 사실주의 영화)',
-    previewUrl: '/images/angle/docu.png'
-  },
-  { 
-    id: 'camcorder', 
+  {
+    id: 'camcorder',
     label: '캠코더 (Camcorder)',
     value: 'Camcorder',
-    description: '90년대 홈비디오 캠코더로 찍은 듯한 레트로하고 거친 질감. 추억 회상 느낌. (활용: 90년대 회상 씬, 홈비디오 컨셉 뮤비, 레트로 광고)',
-    previewUrl: '/images/angle/camcorder.png'
+    category: 'Movement',
+    description: '90년대 홈비디오 특유의 질감과 레트로 감성을 연출합니다. 회상, 가족, 레트로 영상에 적합합니다.',
+    previewUrl: '/images/angle/camcorder.png',
+    examples: [
+      { label: '가족 홈비디오' },
+      { label: '회상 장면' },
+      { label: '레트로 영상' }
+    ]
   },
+  {
+    id: '50mm',
+    label: '50mm 렌즈 (50mm Lens)',
+    value: '50mm Lens',
+    category: 'Movement',
+    description: '사람 눈과 유사한 원근감과 왜곡 없는 시각을 제공하는 렌즈. 스냅, 인물, 여행 영상에 활용됩니다.',
+    previewUrl: '/images/angle/50mm.png',
+    examples: [
+      { label: '여행 스냅' },
+      { label: '인물 사진' },
+      { label: '일상 영상' }
+    ]
+  },
+  {
+    id: 'wide',
+    label: '와이드 (Wide Angle)',
+    value: 'Wide Angle',
+    category: 'Movement',
+    description: '광각 렌즈로 넓은 공간감과 거리감을 강조합니다. 풍경, 실내, 군중 영상에 적합합니다.',
+    previewUrl: '/images/angle/wide.png',
+    examples: [
+      { label: '풍경 사진' },
+      { label: '실내 촬영' },
+      { label: '군중 장면' }
+    ]
+  },
+  {
+    id: 'docu',
+    label: '리얼 다큐 (Realistic Documentary)',
+    value: 'Realistic Documentary',
+    category: 'Movement',
+    description: '관찰자 시점으로 사실적이고 자연스러운 연출을 강조합니다. 다큐멘터리, 뉴스, 사실주의 영상에 활용됩니다.',
+    previewUrl: '/images/angle/docu.png',
+    examples: [
+      { label: '다큐멘터리' },
+      { label: '뉴스 리포트' },
+      { label: '사실주의 영상' }
+    ]
+  },
+];
+
+export const ANGLE_OPTIONS: CameraOption[] = [
+  ...POV_ANGLE_OPTIONS,
+  ...FRAMING_ANGLE_OPTIONS,
+  ...ANGLE_ANGLE_OPTIONS,
+  ...MOVEMENT_ANGLE_OPTIONS,
 ];
 
 export const COLOR_OPTIONS: ColorOption[] = [
@@ -412,97 +696,163 @@ export const COLOR_OPTIONS: ColorOption[] = [
     id: 'random', 
     label: '랜덤 (Random)',
     value: 'Random',
-    description: 'AI가 분위기에 맞는 색감을 자유롭게 선택합니다. (활용: 예상치 못한 예술적 효과를 원할 때)',
+    description: 'AI가 영상의 분위기와 목적에 맞는 색감을 자동으로 선택합니다. 다양한 색상 연출을 시도하거나 특별한 효과가 필요할 때 활용하세요.',
+    examples: [
+      { label: '다양한 색상 실험' },
+      { label: '특별한 효과 필요 시' }
+    ]
   },
   {
     id: 'none',
     label: '없음 (None)',
     value: 'None',
-    description: '색상 보정이나 톤 조정 없이 원본 그대로의 색감을 사용합니다. (활용: 원본 비교, 색상 효과 미적용)',
-    previewUrl: '/images/color/none.png'
+    description: '색상 보정이나 톤 조정 없이 원본 그대로의 색감을 사용합니다. 비교 영상이나 색상 효과가 필요 없는 장면에 적합합니다.',
+    previewUrl: '/images/color/none.png',
+    examples: [
+      { label: '비교 영상' },
+      { label: '색상 효과 미사용' }
+    ]
   },
   { 
     id: 'natural', 
     label: '자연스러움 (Natural)',
     value: 'Natural',
-    description: '눈에 보이는 그대로의 자연스러운 색감. 사실적이고 편안한 느낌. (활용: 뉴스 보도, 다큐멘터리, 상품 상세 페이지)',
-    previewUrl: '/images/color/natural.png'
+    description: '눈에 보이는 그대로의 자연스러운 색감을 재현합니다. 사실적이고 편안한 영상미에 적합합니다.',
+    previewUrl: '/images/color/natural.png',
+    examples: [
+      { label: '자연 풍경' },
+      { label: '일상 영상' }
+    ]
   },
   { 
     id: 'bw', 
     label: '흑백 (Black & White)',
     value: 'Black & White',
-    description: '색을 배제하고 명암으로만 표현. 형태와 질감, 감정에 집중. (활용: 예술 사진, 느와르 영화, 보도 사진, 인물 영정)',
-    previewUrl: '/images/color/bw.png'
+    description: '색을 배제하고 명암만으로 형태와 감정을 표현합니다. 예술, 느와르, 보도 영상에 활용됩니다.',
+    previewUrl: '/images/color/bw.png',
+    examples: [
+      { label: '예술 사진' },
+      { label: '느와르 영화' },
+      { label: '보도 영상' }
+    ]
   },
   { 
     id: 'cinematic', 
     label: '시네마틱 (Teal & Orange)',
     value: 'Teal & Orange',
-    description: '틸(Teal)과 오렌지(Orange) 색상을 강조하여 영화 같은 깊이감을 연출. (활용: 헐리우드 블록버스터 스타일, 시네마틱 브이로그)',
-    previewUrl: '/images/color/cinematic.png'
+    description: '틸(Teal)과 오렌지(Orange) 색상 대비로 영화 같은 깊이감과 분위기를 연출합니다. 시네마틱 영상에 적합합니다.',
+    previewUrl: '/images/color/cinematic.png',
+    examples: [
+      { label: '영화 트레일러' },
+      { label: '시네마틱 광고' }
+    ]
   },
   { 
     id: 'cyberpunk', 
     label: '사이버펑크 (Neon)',
     value: 'Neon',
-    description: '네온 핑크, 퍼플, 블루 등 인공적이고 강렬한 색채. 미래적이고 몽환적인 분위기. (활용: SF 영화, 게임 포스터, 클럽 사진)',
-    previewUrl: '/images/color/cyberpunk.png'
+    description: '네온 핑크, 퍼플, 블루 등 강렬한 인공색으로 미래적이고 몽환적인 분위기를 연출합니다. SF, 게임, 클럽 영상에 적합합니다.',
+    previewUrl: '/images/color/cyberpunk.png',
+    examples: [
+      { label: 'SF 영화' },
+      { label: '게임 트레일러' },
+      { label: '클럽 영상' }
+    ]
   },
   { 
     id: 'pastel', 
     label: '파스텔 (Pastel)',
     value: 'Pastel',
-    description: '채도가 낮고 명도가 높은 부드러운 색조. 꿈같고 사랑스러운 동화적인 분위기. (활용: 디저트 광고, 아이돌 뮤직비디오, 팬시 용품)',
-    previewUrl: '/images/color/pastel.png'
+    description: '채도가 낮고 밝은 부드러운 색조로 꿈같고 사랑스러운 분위기를 연출합니다. 동화, 뮤직비디오, 팬시 영상에 활용됩니다.',
+    previewUrl: '/images/color/pastel.png',
+    examples: [
+      { label: '동화 영상' },
+      { label: '뮤직비디오' },
+      { label: '팬시 광고' }
+    ]
   },
   { 
     id: 'vintage', 
     label: '빈티지 (Vintage)',
     value: 'Vintage',
-    description: '빛바랜 듯한 색감과 노이즈. 오래된 사진이나 영화 같은 향수 어린 느낌. (활용: 레트로 패션 화보, 카페 홍보, 추억 회상)',
-    previewUrl: '/images/color/vintage.png'
+    description: '빛바랜 색감과 노이즈로 오래된 사진이나 영화 같은 향수와 감성을 연출합니다. 레트로, 추억 영상에 적합합니다.',
+    previewUrl: '/images/color/vintage.png',
+    examples: [
+      { label: '레트로 영상' },
+      { label: '추억 회상' },
+      { label: '빈티지 광고' }
+    ]
   },
   { 
     id: 'muted', 
     label: '채도 낮음 (Muted)',
     value: 'Muted',
-    description: '채도를 낮추어 차분하고 정적인 느낌. 세련되고 우울한 분위기. (활용: 킨포크 스타일 감성 사진, 미니멀리즘 인테리어)',
-    previewUrl: '/images/color/muted.png'
+    description: '채도를 낮춰 차분하고 정적인 분위기를 연출합니다. 세련되고 우울한 감성, 미니멀리즘 영상에 활용됩니다.',
+    previewUrl: '/images/color/muted.png',
+    examples: [
+      { label: '미니멀리즘 영상' },
+      { label: '우울한 감성' },
+      { label: '세련된 광고' }
+    ]
   },
   { 
     id: 'vivid', 
     label: '선명함 (Vivid)',
     value: 'Vivid',
-    description: '채도를 높여 색상이 뚜렷하고 생동감 넘침. 활기차고 강렬한 인상. (활용: 스포츠 의류 광고, 음식 사진, 축제 현장)',
-    previewUrl: '/images/color/vivid.png'
+    description: '채도를 높여 색상이 뚜렷하고 생동감 넘치는 화면을 연출합니다. 스포츠, 음식, 축제 영상에 적합합니다.',
+    previewUrl: '/images/color/vivid.png',
+    examples: [
+      { label: '스포츠 영상' },
+      { label: '음식 광고' },
+      { label: '축제 영상' }
+    ]
   },
   { 
     id: 'sepia', 
     label: '세피아 (Sepia)',
     value: 'Sepia',
-    description: '갈색 톤의 단색조. 오래된 기록물이나 회상 장면 같은 고전적인 느낌. (활용: 서부 영화, 역사적 자료 재현, 몽타주)',
-    previewUrl: '/images/color/sepia.png'
+    description: '갈색 톤의 단색조로 고전적이고 회상 장면 같은 분위기를 연출합니다. 서부, 역사, 몽타주 영상에 활용됩니다.',
+    previewUrl: '/images/color/sepia.png',
+    examples: [
+      { label: '서부 영화' },
+      { label: '역사 다큐' },
+      { label: '몽타주 영상' }
+    ]
   },
   { 
     id: 'noir', 
     label: '누아르 (Film Noir)',
     value: 'Film Noir',
-    description: '대비가 강한 흑백이나 어두운 톤. 범죄 영화나 미스터리물의 음울한 분위기. (활용: 탐정물, 미스터리 소설 삽화, 공포 게임)',
-    previewUrl: '/images/color/noir.png'
+    description: '대비가 강한 흑백 또는 어두운 톤으로 범죄, 미스터리, 공포 영상의 음울한 분위기를 연출합니다.',
+    previewUrl: '/images/color/noir.png',
+    examples: [
+      { label: '범죄 영화' },
+      { label: '미스터리 영상' },
+      { label: '공포 영화' }
+    ]
   },
   { 
     id: 'warm', 
     label: '따뜻함 (Warm Tone)',
     value: 'Warm Tone',
-    description: '붉은색, 주황색, 노란색 계열이 주를 이룸. 따뜻하고 포근하며 친근한 느낌. (활용: 가족 식사 장면, 베이커리 광고, 가을 풍경)',
-    previewUrl: '/images/color/warm.png'
+    description: '붉은색, 주황색, 노란색 계열로 따뜻하고 포근하며 친근한 분위기를 연출합니다. 가족, 베이커리, 가을 영상에 적합합니다.',
+    previewUrl: '/images/color/warm.png',
+    examples: [
+      { label: '가족 영상' },
+      { label: '베이커리 광고' },
+      { label: '가을 풍경' }
+    ]
   },
   { 
     id: 'cool', 
     label: '차가움 (Cool Tone)',
     value: 'Cool Tone',
-    description: '푸른색, 청록색 계열이 주를 이룸. 차갑고 이성적이며 고독한 느낌. (활용: 병원/실험실 배경, IT 제품 광고, 겨울 풍경)',
-    previewUrl: '/images/color/cool.png'
+    description: '푸른색, 청록색 계열로 차갑고 이성적이며 고독한 분위기를 연출합니다. 병원, IT, 겨울 영상에 활용됩니다.',
+    previewUrl: '/images/color/cool.png',
+    examples: [
+      { label: '병원 영상' },
+      { label: 'IT 광고' },
+      { label: '겨울 풍경' }
+    ]
   },
 ];
