@@ -1,8 +1,9 @@
 
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Header from './components/Header';
 import OptionSelector from './components/OptionSelector';
-import { LIGHTING_OPTIONS, ANGLE_OPTIONS, COLOR_OPTIONS, SCENE_OPTIONS } from './constants';
+import { LIGHTING_OPTIONS, ANGLE_OPTIONS, COLOR_OPTIONS, SCENE_OPTIONS, SPECIAL_EFFECTS_OPTIONS, ASPECT_RATIO_OPTIONS } from './constants';
+
 import { generateImage } from './services/geminiService';
 
 const App: React.FC = () => {
@@ -19,149 +20,152 @@ const App: React.FC = () => {
   const [selectedLighting, setSelectedLighting] = useState<string>('random');
   const [selectedPov, setSelectedPov] = useState<string>('random');
   const [selectedColor, setSelectedColor] = useState<string>('random');
-  const [additionalDetails, setAdditionalDetails] = useState<string>('축구장에서 축구하는 선수들');
+  const [selectedEffect, setSelectedEffect] = useState<string>('random');
+  const [additionalDetails, setAdditionalDetails] = useState<string>('물방울');
 
-
+  // 특수효과
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [generatedPrompt, setGeneratedPrompt] = useState<string | null>(null);
   const [koreanPrompt, setKoreanPrompt] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  // 비율(Aspect Ratio) 상태
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState<string>('random');
+
   // Track the resolved options used for the last generation to display them
-  const [usedOptions, setUsedOptions] = useState<{ lighting: string, pov: string, color: string, details: string } | null>(null);
+  const [usedOptions, setUsedOptions] = useState<{
+    lighting: string,
+    pov: string,
+    color: string,
+    details: string,
+    scene: string,
+    effect: string,
+    aspectRatio: string
+  } | null>(null);
 
-  // Helper to extract Korean text from "Korean (English)" format
-  const getKo = (label: string) => label.split('(')[0].trim();
 
-  // 옵션/상세정보 변경 시마다 usedOptions 동기화
-  React.useEffect(() => {
-    // Lighting
-    let lightingOption = LIGHTING_OPTIONS.find(o => o.id === selectedLighting);
-    if (selectedLighting === 'random') lightingOption = LIGHTING_OPTIONS.find(o => o.id === 'random');
-    let lightingKo = lightingOption ? getKo(lightingOption.label) : selectedLighting;
-    // POV
-    let povOption = ANGLE_OPTIONS.find(o => o.id === selectedPov);
-    if (selectedPov === 'random') povOption = ANGLE_OPTIONS.find(o => o.id === 'random');
-    let povKo = povOption ? getKo(povOption.label) : selectedPov;
-    // Color
-    let colorOption = COLOR_OPTIONS.find(o => o.id === selectedColor);
-    if (selectedColor === 'random') colorOption = COLOR_OPTIONS.find(o => o.id === 'random');
-    let colorKo = colorOption ? getKo(colorOption.label) : selectedColor;
-    // Scene
-    let sceneKo = selectedScene === 'custom' ? customScene : '랜덤';
+
+  // 옵션/상세정보 변경 시마다 usedOptions 동기화 (ko 제거)
+  useEffect(() => {
     setUsedOptions({
-      lighting: lightingKo,
-      pov: povKo,
-      color: colorKo,
+      lighting: selectedLighting,
+      pov: selectedPov,
+      color: selectedColor,
       details: additionalDetails,
-      scene: sceneKo
+      scene: selectedScene === 'random' ? selectedScene : customScene,
+      effect: selectedEffect,
+      aspectRatio: selectedAspectRatio,
     });
-  }, [selectedLighting, selectedPov, selectedColor, additionalDetails, selectedScene, customScene]);
+  }, [selectedLighting, selectedPov, selectedColor, additionalDetails, selectedScene, customScene, selectedEffect, selectedAspectRatio]);
+ 
 
   const resultRef = useRef<HTMLDivElement>(null);
 
-  const handleGenerate = useCallback(async () => {
-    // 장면 입력 체크
-    let sceneValue = selectedScene === 'custom' ? customScene.trim() : '';
+
+  // --- 옵션별 분리 함수 (ko 제거) ---
+  const resolveLighting = () => {
+    let option = LIGHTING_OPTIONS.find(o => o.id === selectedLighting);
+    if (selectedLighting === 'random') {
+      const candidates = LIGHTING_OPTIONS.filter(o => o.id !== 'random');
+      option = candidates[Math.floor(Math.random() * candidates.length)];
+    }
+    let en = 'Not Specified';
+    if (option) {
+      en = option.value;
+      if (option.category === 'Natural' || option.category === 'Artificial') {
+        en = `${option.category} Light - ${en}`;
+      }
+    }
+    return { en };
+  };
+
+  const resolvePov = () => {
+    let povId = selectedPov;
+    let povEn = selectedPov;
+    if (povId === 'random') {
+      const candidates = ANGLE_OPTIONS.filter(o => o.id !== 'random');
+      const randomOption = candidates[Math.floor(Math.random() * candidates.length)];
+      povId = randomOption.id;
+      povEn = randomOption.value;
+    } else {
+      const opt = ANGLE_OPTIONS.find(o => o.id === povId);
+      if (opt) {
+        povEn = opt.value;
+      }
+    }
+    return { en: povEn };
+  };
+
+  const resolveColor = () => {
+    let option = COLOR_OPTIONS.find(o => o.id === selectedColor);
+    if (selectedColor === 'random') {
+      const candidates = COLOR_OPTIONS.filter(o => o.id !== 'random');
+      option = candidates[Math.floor(Math.random() * candidates.length)];
+    }
+    return {
+      en: option ? option.value : selectedColor
+    };
+  };
+
+  const resolveEffect = () => {
+    if (selectedEffect === 'random') {
+      const candidates = SPECIAL_EFFECTS_OPTIONS.filter(o => o.id !== 'random');
+      const randomOption = candidates[Math.floor(Math.random() * candidates.length)];
+      return randomOption.value;
+    }
+    const effectOption = SPECIAL_EFFECTS_OPTIONS.find(o => o.id === selectedEffect);
+    return effectOption ? effectOption.value : selectedEffect;
+  };
+
+  const checkValidation = () => {
+    const sceneValue = selectedScene === 'custom' ? customScene.trim() : '';
     if (selectedScene === 'custom' && !sceneValue) {
       setError("장면을 입력해주세요. (예: 황량한 사막, 뜨거운 태양 아래 먼지가 날리는 장면)");
-      return;
+      return false;
     }
     if (!additionalDetails.trim()) {
       setError("추가 세부 정보를 입력해주세요. (예: 숲속의 사슴, 미래 도시의 자동차)");
-      return;
+      return false;
     }
+    return true;
+  };
 
+  const resetStates = () => {
     setIsGenerating(true);
     setError(null);
     setGeneratedImage(null);
     setGeneratedPrompt(null);
     setKoreanPrompt(null);
-    // setUsedOptions(null); // 삭제: 옵션 요약은 항상 실시간 반영
+  };
 
-    // Helper to extract Korean text from "Korean (English)" format
-    const getKo = (label: string) => label.split('(')[0].trim();
+  const handleGenerate = useCallback(async () => {
+    if (!checkValidation()) return;
+    resetStates();
 
-    // --- Resolve Lighting ---
-    let activeLightingOption = LIGHTING_OPTIONS.find(o => o.id === selectedLighting);
-    if (selectedLighting === 'random') {
-      const candidates = LIGHTING_OPTIONS.filter(o => o.id !== 'random');
-      activeLightingOption = candidates[Math.floor(Math.random() * candidates.length)];
-    }
-
-    // Prompt Strings
-    let lightingPromptEn = "Not Specified";
-    let lightingPromptKo = "선택 안함";
-
-    if (activeLightingOption) {
-      // English Prompt
-      lightingPromptEn = activeLightingOption.value;
-      if (activeLightingOption.category === 'Natural' || activeLightingOption.category === 'Artificial') {
-        lightingPromptEn = `${activeLightingOption.category} Light - ${lightingPromptEn}`;
-      }
-      // Korean Prompt (Display)
-      lightingPromptKo = activeLightingOption.category === 'Natural'
-        ? `자연광: ${getKo(activeLightingOption.label)}`
-        : activeLightingOption.category === 'Artificial'
-          ? `인공광: ${getKo(activeLightingOption.label)}`
-          : getKo(activeLightingOption.label);
-    }
-
-    // --- Resolve POV (3인칭 표기 개선) ---
-    let povPromptEn = selectedPov;
-    let povPromptKo = selectedPov;
-    let effectivePovId = selectedPov;
-
-    // 1. Handle Random POV logic
-    if (effectivePovId === 'random') {
-      const candidates = ANGLE_OPTIONS.filter(o => o.id !== 'random');
-      const randomOption = candidates[Math.floor(Math.random() * candidates.length)];
-      effectivePovId = randomOption.id;
-      povPromptEn = randomOption.value;
-      povPromptKo = getKo(randomOption.label);
-    } else {
-      // 2. Resolve label from ID
-      const opt = ANGLE_OPTIONS.find(o => o.id === effectivePovId);
-      if (opt) {
-        povPromptEn = opt.value;
-        // 자연광/인공광 구분처럼 3인칭은 "3인칭: ..."으로 표기
-        povPromptKo = opt.category === '3인칭' ? `3인칭: ${getKo(opt.label)}` : getKo(opt.label);
-      }
-    }
-
-    // POV만 프롬프트로 사용
-    const cameraPromptEn = povPromptEn;
-    const cameraPromptKo = povPromptKo;
-
-    // --- Resolve Color ---
-    let activeColorOption = COLOR_OPTIONS.find(o => o.id === selectedColor);
-    if (selectedColor === 'random') {
-      const candidates = COLOR_OPTIONS.filter(o => o.id !== 'random');
-      activeColorOption = candidates[Math.floor(Math.random() * candidates.length)];
-    }
-    const colorPromptEn = activeColorOption ? activeColorOption.value : selectedColor;
-    const colorPromptKo = activeColorOption ? getKo(activeColorOption.label) : selectedColor;
+    const sceneValue = selectedScene === 'random' ? selectedScene : customScene;
+    const lighting = resolveLighting();
+    const pov = resolvePov();
+    const color = resolveColor();
+    const effectValue = resolveEffect();
 
     try {
-      // 서비스에서 한글 프롬프트를 바로 받아서 사용
       const { imageUrl, fullPrompt, koreanPrompt } = await generateImage(
-        lightingPromptEn,
-        cameraPromptEn,
-        colorPromptEn,
+        lighting.en,
+        pov.en,
+        color.en,
         additionalDetails,
-        sceneValue || undefined
+        sceneValue,
+        effectValue,
+        selectedAspectRatio
       );
-
       setGeneratedPrompt(fullPrompt);
       setKoreanPrompt(koreanPrompt);
-
       if (imageUrl) {
         setGeneratedImage(imageUrl);
       } else {
         setError('이미지 생성에 실패했습니다. 잠시 후 다시 시도해 주세요.');
       }
-
       setTimeout(() => {
         resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -170,7 +174,7 @@ const App: React.FC = () => {
     } finally {
       setIsGenerating(false);
     }
-  }, [selectedLighting, selectedPov, selectedColor, additionalDetails]);
+  }, [selectedLighting, selectedPov, selectedColor, additionalDetails, selectedScene, customScene, selectedEffect]);
 
   return (
     <div className="min-h-screen w-full bg-darker text-slate-200 selection:bg-primary selection:text-white p-2 md:p-12 overflow-x-hidden">
@@ -195,7 +199,7 @@ const App: React.FC = () => {
                     type="text"
                     placeholder="황량한 사막, 뜨거운 태양 아래 먼지가 날리는 장면"
                     value={selectedScene === 'random' ? '-' : customScene === 'random' ? '' : customScene}
-                    onChange={e => setCustomScene(e.target.value)}
+                    onChange={e => setCustomScene(e.target.value === '-' ? 'random' : e.target.value)}
                     disabled={selectedScene !== 'custom'}
                   />
                 }
@@ -221,6 +225,21 @@ const App: React.FC = () => {
                 onSelect={setSelectedColor}
               />
 
+
+              <OptionSelector
+                title="특수효과 (Special Effects)"
+                options={SPECIAL_EFFECTS_OPTIONS}
+                selectedId={selectedEffect}
+                onSelect={setSelectedEffect}
+              />
+
+              <OptionSelector
+                title="비율 (Aspect Ratio)"
+                options={ASPECT_RATIO_OPTIONS}
+                selectedId={selectedAspectRatio}
+                onSelect={setSelectedAspectRatio}
+              />
+
               <div className="mb-1">
                 <h3 className="text-lg font-semibold text-slate-200 mb-4 flex items-center">
                   <span className="w-1 h-6 bg-secondary rounded-full mr-2"></span>
@@ -228,7 +247,7 @@ const App: React.FC = () => {
                 </h3>
                 <textarea
                   className="w-full h-32 bg-card border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent resize-none transition-all"
-                  placeholder="이미지에 대한 자세한 설명을 입력하세요. (예: 비가 내리는 사이버펑크 도시의 네온 사인 아래 서 있는 로봇)"
+                  placeholder="추가 설명을 입력하세요. (예: 고풍스러운 책상 / 오래된 책 또는 주인공이 고풍스러운 책상을 앞에 두고, 손에는 오래된 책을 쥐고 있다.)"
                   value={additionalDetails}
                   onChange={(e) => setAdditionalDetails(e.target.value)}
                 />
@@ -260,6 +279,12 @@ const App: React.FC = () => {
                   </span>
                   <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
                     색상: {usedOptions ? usedOptions.color : ''}
+                  </span>
+                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                    특수효과: {usedOptions ? usedOptions.effect : ''}
+                  </span>
+                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
+                    비율: {usedOptions ? (ASPECT_RATIO_OPTIONS.find(opt => opt.id === usedOptions.aspectRatio)?.value || '') : ''}
                   </span>
                   <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
                     추가 정보: {usedOptions ? usedOptions.details : ''}

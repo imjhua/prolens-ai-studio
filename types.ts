@@ -1,10 +1,6 @@
 export interface Example {
   label: string;
-  description?: string;
 }
-
-
-
 
 export interface OptionBase {
   id: string;

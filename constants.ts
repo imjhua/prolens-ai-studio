@@ -1,7 +1,222 @@
-
 import { LightingOption, CameraOption, ColorOption } from './types';
 import type { Example } from './types';
 
+
+// Special Effects Option
+export type SpecialEffectOption = {
+  id: string;
+  label: string;
+  value: string;
+  category?: string;
+  description?: string;
+  previewUrl?: string;
+  examples?: Example[];
+};
+
+// SPECIAL_EFFECTS_OPTIONS를 카테고리별로 분리 (Motion, Distortion, Destruction, Transition, Element, 기타)
+const GENERAL_SPECIAL_EFFECTS: SpecialEffectOption[] = [
+  {
+    id: 'random',
+    label: '랜덤 (Random)',
+    value: 'Random',
+    description: '다양한 효과를 시도하거나 특별한 분위기를 연출하고자 할 때 적합합니다.',
+    examples: [
+      { label: '' }
+    ]
+  },
+  {
+    id: 'none',
+    label: '없음 (None)',
+    value: 'None',
+    description: '특수효과를 적용하지 않고 원본 이미지 그대로를 사용합니다. 비교 영상이나 효과가 필요 없는 장면에 적합합니다.',
+    previewUrl: '/images/effects/none.png',
+    examples: [
+      { label: '비교 영상' },
+      { label: '색상 효과 미사용' }
+    ]
+  },
+];
+
+const MOTION_SPECIAL_EFFECTS: SpecialEffectOption[] = [
+  {
+    id: 'motion-fast',
+    label: '패스트 모션 (Fast Motion)',
+    value: 'Fast Motion',
+    category: 'Motion',
+    description: '영상의 속도를 빠르게 하여 역동적이고 긴박한 분위기를 연출합니다.',
+    previewUrl: '/images/effects/motion-fast.png',
+    examples: [
+      { label: '스포츠 하이라이트' },
+      { label: '시간 경과 표현' }
+    ]
+  },
+  {
+    id: 'motion-slow',
+    label: '슬로우 모션 (Slow Motion)',
+    value: 'Slow Motion',
+    category: 'Motion',
+    description: '영상의 속도를 느리게 하여 감정, 디테일, 극적인 순간을 강조합니다.',
+    previewUrl: '/images/effects/motion-slow.png',
+    examples: [
+      { label: '감정 연기 강조' },
+      { label: '액션 장면' }
+    ]
+  },
+  {
+    id: 'motion-dynamic',
+    label: '다이내믹 모션 (Dynamic Motion)',
+    value: 'Dynamic Motion',
+    category: 'Motion',
+    description: '카메라 워크, 줌, 패닝 등 다양한 움직임을 활용해 역동적인 연출을 만듭니다.',
+    previewUrl: '/images/effects/motion-dynamic.png',
+    examples: [
+      { label: '뮤직비디오' },
+      { label: '댄스 영상' }
+    ]
+  },
+  {
+    id: 'motion-undulate',
+    label: '언들레이트 (Undulate)',
+    value: 'Undulate',
+    category: 'Motion',
+    description: '파도처럼 부드럽게 흔들리거나 출렁이는 움직임을 연출합니다.',
+    previewUrl: '/images/effects/motion-undulate.png',
+    examples: [
+      { label: '몽환적 영상' },
+      { label: '물결 효과' }
+    ]
+  },
+];
+
+const DISTORTION_SPECIAL_EFFECTS: SpecialEffectOption[] = [
+  {
+    id: 'warp',
+    label: '워프 (Warp)',
+    value: 'Warp',
+    category: 'Distortion',
+    description: '화면을 왜곡하거나 비틀어 독특하고 초현실적인 효과를 연출합니다.',
+    previewUrl: '/images/effects/warp.png',
+    examples: [
+      { label: 'SF 영상' },
+      { label: '환상적 장면' }
+    ]
+  },
+  {
+    id: 'vortex',
+    label: '보텍스 (Vortex)',
+    value: 'Vortex',
+    category: 'Distortion',
+    description: '소용돌이치는 듯한 회오리 효과로 강렬한 몰입감을 줍니다.',
+    previewUrl: '/images/effects/vortex.png',
+    examples: [
+      { label: '환상적 장면' },
+      { label: '타임슬립 연출' }
+    ]
+  },
+  {
+    id: 'glitch',
+    label: '글리치 (Glitch)',
+    value: 'Glitch',
+    category: 'Distortion',
+    description: '디지털 오류, 노이즈, 깨짐 등으로 미래적이고 실험적인 분위기를 연출합니다.',
+    previewUrl: '/images/effects/glitch.png',
+    examples: [
+      { label: '사이버펑크 영상' },
+      { label: '실험적 광고' }
+    ]
+  },
+];
+
+const DESTRUCTION_SPECIAL_EFFECTS: SpecialEffectOption[] = [
+  {
+    id: 'shatter',
+    label: '세터 (Shatter)',
+    value: 'Shatter',
+    category: 'Destruction',
+    description: '화면이 산산이 부서지는 듯한 파괴적 효과를 연출합니다.',
+    previewUrl: '/images/effects/shatter.png',
+    examples: [
+      { label: '액션 영화' },
+      { label: '드라마틱한 전환' }
+    ]
+  },
+];
+
+const TRANSITION_SPECIAL_EFFECTS: SpecialEffectOption[] = [
+  {
+    id: 'transform',
+    label: '트랜스폼 (Transform)',
+    value: 'Transform',
+    category: 'Transition',
+    description: '화면이 변형되거나 변신하는 듯한 전환 효과를 연출합니다.',
+    previewUrl: '/images/effects/transform.png',
+    examples: [
+      { label: '변신 장면' },
+      { label: '창의적 전환' }
+    ]
+  },
+];
+
+const ELEMENT_SPECIAL_EFFECTS: SpecialEffectOption[] = [
+  {
+    id: 'fire',
+    label: '불꽃 (Fire)',
+    value: 'Fire',
+    category: 'Element',
+    description: '불꽃, 화염 등 강렬한 열정과 에너지를 표현하는 특수효과입니다.',
+    previewUrl: '/images/effects/fire.png',
+    examples: [
+      { label: '액션 영화' },
+      { label: '뮤직비디오' }
+    ]
+  },
+  {
+    id: 'sparkle',
+    label: '스파클 (Sparkle)',
+    value: 'Sparkle',
+    category: 'Element',
+    description: '반짝임, 빛나는 입자 등으로 화려하고 환상적인 분위기를 연출합니다.',
+    previewUrl: '/images/effects/sparkle.png',
+    examples: [
+      { label: '동화 영상' },
+      { label: '파티 신' }
+    ]
+  },
+  {
+    id: 'smoke',
+    label: '스모크 (Smoke)',
+    value: 'Smoke',
+    category: 'Element',
+    description: '연기, 안개 등 몽환적이고 신비로운 분위기를 연출합니다.',
+    previewUrl: '/images/effects/smoke.png',
+    examples: [
+      { label: '공연 영상' },
+      { label: '뮤직비디오' }
+    ]
+  },
+  {
+    id: 'particle',
+    label: '파티클 (Particle)',
+    value: 'Particle',
+    category: 'Element',
+    description: '입자, 먼지, 빛 등 다양한 파티클 효과로 공간감을 더합니다.',
+    previewUrl: '/images/effects/particle.png',
+    examples: [
+      { label: '판타지 영상' },
+      { label: '자연 다큐' }
+    ]
+  },
+];
+
+// 카테고리별로 합쳐서 export
+export const SPECIAL_EFFECTS_OPTIONS: SpecialEffectOption[] = [
+  ...GENERAL_SPECIAL_EFFECTS,
+  ...MOTION_SPECIAL_EFFECTS,
+  ...DISTORTION_SPECIAL_EFFECTS,
+  ...DESTRUCTION_SPECIAL_EFFECTS,
+  ...TRANSITION_SPECIAL_EFFECTS,
+  ...ELEMENT_SPECIAL_EFFECTS,
+];
 
 // Scene Options (장면 설정)
 export const SCENE_OPTIONS = [
@@ -9,11 +224,7 @@ export const SCENE_OPTIONS = [
     id: 'random',
     label: '랜덤 (Random)',
     value: 'Random',
-    description: 'AI가 영상의 분위기와 목적에 맞는 장면을 자동으로 선택합니다. 다양한 연출을 시도하거나 특별한 장면 효과가 필요할 때 활용하세요.',
-    examples: [
-      { label: '다양한 연출 시도' },
-      { label: '특별한 장면 효과 필요 시' }
-    ]
+    description: '영상의 분위기와 목적에 맞는 장면을 자동으로 선택합니다.',
   },
   {
     id: 'custom',
@@ -33,11 +244,7 @@ const GENERAL_LIGHTING_OPTIONS: LightingOption[] = [
     id: 'random',
     label: '랜덤 (Random)',
     value: 'Random',
-    description: 'AI가 영상의 분위기와 목적에 맞는 조명을 자동으로 선택합니다. 다양한 연출을 시도하거나 특별한 조명 효과가 필요할 때 활용하세요.',
-    examples: [
-      { label: '창의적인 아이디어가 필요할 때' },
-      { label: '예상치 못한 조명 효과를 원할 때' }
-    ]
+    description: '영상의 분위기와 목적에 맞는 조명을 자동으로 선택합니다.',
   },
 ];
 
@@ -379,11 +586,7 @@ const POV_ANGLE_OPTIONS: CameraOption[] = [
     id: 'random',
     label: '랜덤 (Random)',
     value: 'Random',
-    description: 'AI가 영상의 분위기와 목적에 맞는 카메라 앵글을 자동으로 선택합니다. 다양한 연출을 시도하거나 특별한 시점이 필요할 때 활용하세요.',
-    examples: [
-      { label: '다양한 연출 시도' },
-      { label: '특별한 시점 필요 시' }
-    ]
+    description: '영상의 분위기와 목적에 맞는 카메라 앵글을 자동으로 선택합니다.',
   },
   {
     id: 'fpv',
@@ -391,7 +594,7 @@ const POV_ANGLE_OPTIONS: CameraOption[] = [
     value: 'First Person View',
     category: 'POV',
     description: '인물의 눈 위치에서 촬영해 몰입감과 현장감을 극대화하는 시점. 체험형, 게임, 브이로그 영상에 적합합니다.',
-    previewUrl: '/images/angle/fpv.png',
+    previewUrl: '/images/angle/pov/fpv.png',
     examples: [
       { label: '게임 플레이 영상' },
       { label: '체험형 광고' },
@@ -404,7 +607,7 @@ const POV_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Selfie',
     category: 'POV',
     description: '카메라를 인물 자신이 직접 들고 촬영하는 시점. 친근함, 일상, 브이로그, SNS 콘텐츠에 적합합니다.',
-    previewUrl: '/images/angle/selfie.png',
+    previewUrl: '/images/angle/pov/selfie.png',
     examples: [
       { label: '셀카 영상' },
       { label: '브이로그' },
@@ -417,7 +620,7 @@ const POV_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Over The Shoulder',
     category: 'POV',
     description: '인물의 어깨 너머로 상대방을 바라보는 시점. 관계, 대화, 상호작용을 강조하는 영상에 활용됩니다.',
-    previewUrl: '/images/angle/ots.png',
+    previewUrl: '/images/angle/pov/ots.png',
     examples: [
       { label: '영화 대화 장면' },
       { label: '상호작용 강조' },
@@ -430,7 +633,7 @@ const POV_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Drone View',
     category: 'POV',
     description: '하늘에서 내려다보는 항공 시점으로 공간의 스케일과 역동성을 강조합니다. 여행, 행사, 액션 영상에 적합합니다.',
-    previewUrl: '/images/angle/drone.png',
+    previewUrl: '/images/angle/pov/drone.png',
     examples: [
       { label: '여행 영상' },
       { label: '행사 스케일 강조' },
@@ -443,7 +646,7 @@ const POV_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Handheld',
     category: 'POV',
     description: '손으로 직접 들고 촬영한 듯한 자연스러운 흔들림이 특징. 리얼리티, 다큐, 현장감 있는 영상에 활용됩니다.',
-    previewUrl: '/images/angle/handheld.png',
+    previewUrl: '/images/angle/pov/handheld.png',
     examples: [
       { label: '현장감 있는 다큐' },
       { label: '리얼리티 프로그램' },
@@ -459,7 +662,7 @@ const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Extreme Long Shot',
     category: 'Framing',
     description: '매우 먼 거리에서 촬영해 배경과 공간의 스케일을 강조합니다. 오프닝, 대자연, 전경 영상에 적합합니다.',
-    previewUrl: '/images/angle/extreme-long.png',
+    previewUrl: '/images/angle/framing/extreme-long.png',
     examples: [
       { label: '영화 오프닝' },
       { label: '대자연 풍경' },
@@ -472,7 +675,7 @@ const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Full Shot',
     category: 'Framing',
     description: '피사체의 전신이 프레임에 들어오도록 촬영해 동작과 배경을 함께 보여줍니다. 패션, 무용, 단체 영상에 활용됩니다.',
-    previewUrl: '/images/angle/full.png',
+    previewUrl: '/images/angle/framing/full.png',
     examples: [
       { label: '패션쇼 영상' },
       { label: '무용 공연' },
@@ -485,7 +688,7 @@ const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Waist Shot',
     category: 'Framing',
     description: '허리 위부터 머리까지 프레임에 담아 상반신 동작과 표정을 강조합니다. 토크쇼, 일상 대화 영상에 적합합니다.',
-    previewUrl: '/images/angle/waist.png',
+    previewUrl: '/images/angle/framing/waist.png',
     examples: [
       { label: '토크쇼' },
       { label: '일상 대화' },
@@ -498,7 +701,7 @@ const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Bust Shot',
     category: 'Framing',
     description: '가슴 위부터 머리까지 프레임에 담아 감정과 표정을 집중적으로 보여줍니다. 인터뷰, 인물 중심 영상에 활용됩니다.',
-    previewUrl: '/images/angle/bust.png',
+    previewUrl: '/images/angle/framing/bust.png',
     examples: [
       { label: '인물 인터뷰' },
       { label: '감정 연기' },
@@ -511,7 +714,7 @@ const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Close-up',
     category: 'Framing',
     description: '피사체에 가까이 다가가 감정과 디테일을 강조하는 앵글. 감정 연기, 광고, 인물 영상에 적합합니다.',
-    previewUrl: '/images/angle/closeup.png',
+    previewUrl: '/images/angle/framing/closeup.png',
     examples: [
       { label: '감정 연기' },
       { label: '화장품 광고' },
@@ -524,7 +727,7 @@ const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Extreme Close-up',
     category: 'Framing',
     description: '눈, 입 등 극히 일부분을 극적으로 강조해 긴장감과 디테일을 극대화합니다. 감정, 서스펜스 영상에 활용됩니다.',
-    previewUrl: '/images/angle/extreme-closeup.png',
+    previewUrl: '/images/angle/framing/extreme-closeup.png',
     examples: [
       { label: '서스펜스 영화' },
       { label: '눈물 연기' },
@@ -537,7 +740,7 @@ const FRAMING_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Macro Cinematography',
     category: 'Framing',
     description: '초접사로 미세한 질감과 패턴을 강조하는 앵글. 과학, 화장품, 자연 다큐 영상에 적합합니다.',
-    previewUrl: '/images/angle/macro.png',
+    previewUrl: '/images/angle/framing/macro.png',
     examples: [
       { label: '자연 다큐멘터리' },
       { label: '화장품 광고' },
@@ -553,7 +756,7 @@ const ANGLE_ANGLE_OPTIONS: CameraOption[] = [
     value: 'High Angle',
     category: 'Angle',
     description: '위에서 아래로 내려다보는 각도로 피사체의 약함, 귀여움, 위축된 느낌을 강조합니다. 동물, 아이, 공포 영상에 활용됩니다.',
-    previewUrl: '/images/angle/high.png',
+    previewUrl: '/images/angle/angle/high.png',
     examples: [
       { label: '동물 영상' },
       { label: '공포 영화' },
@@ -566,7 +769,7 @@ const ANGLE_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Low Angle',
     category: 'Angle',
     description: '아래에서 위로 올려다보는 각도로 위엄, 힘, 영웅성을 강조합니다. 영웅, 건축물, 웅장한 영상에 적합합니다.',
-    previewUrl: '/images/angle/low.png',
+    previewUrl: '/images/angle/angle/low.png',
     examples: [
       { label: '영웅 영화' },
       { label: '건축물 촬영' },
@@ -579,7 +782,7 @@ const ANGLE_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Overhead',
     category: 'Angle',
     description: '수직으로 내려다보는 각도로 패턴, 배치, 공간 구성을 강조합니다. 음식, 도시, 테이블 영상에 활용됩니다.',
-    previewUrl: '/images/angle/overhead.png',
+    previewUrl: '/images/angle/angle/overhead.png',
     examples: [
       { label: '음식 촬영' },
       { label: '도시 항공샷' },
@@ -592,7 +795,7 @@ const ANGLE_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Dutch Angle',
     category: 'Angle',
     description: '카메라를 기울여 불안, 혼란, 긴장감을 연출하는 앵글. 스릴러, 심리극, 액션 영상에 적합합니다.',
-    previewUrl: '/images/angle/dutch.png',
+    previewUrl: '/images/angle/angle/dutch.png',
     examples: [
       { label: '스릴러 영화' },
       { label: '심리극' },
@@ -608,7 +811,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Pan Shot',
     category: 'Movement',
     description: '카메라를 좌우로 회전시켜 공간감, 움직임, 장면 전환을 강조합니다. 스포츠, 풍경, 액션 영상에 활용됩니다.',
-    previewUrl: '/images/angle/pan.png',
+    previewUrl: '/images/angle/movement/pan.png',
     examples: [
       { label: '스포츠 중계' },
       { label: '풍경 영상' },
@@ -621,7 +824,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Tilt Shot',
     category: 'Movement',
     description: '카메라를 상하로 기울여 높이감, 위압감, 시선 이동을 표현합니다. 건물, 인물, 시점 전환 영상에 적합합니다.',
-    previewUrl: '/images/angle/tilt.png',
+    previewUrl: '/images/angle/movement/tilt.png',
     examples: [
       { label: '건물 촬영' },
       { label: '시선 이동 연출' },
@@ -634,7 +837,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Tracking Shot',
     category: 'Movement',
     description: '카메라가 피사체를 따라 이동해 속도감과 역동성을 강조합니다. 경주, 추격, 액션 영상에 활용됩니다.',
-    previewUrl: '/images/angle/tracking.png',
+    previewUrl: '/images/angle/movement/tracking.png',
     examples: [
       { label: '추격 장면' },
       { label: '경주 영상' },
@@ -647,7 +850,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Crane Shot',
     category: 'Movement',
     description: '크레인 등 장비로 카메라를 입체적으로 이동시켜 웅장함과 공간감, 극적인 전환을 연출합니다. 오프닝, 군중, 뮤직비디오에 적합합니다.',
-    previewUrl: '/images/angle/crane.png',
+    previewUrl: '/images/angle/movement/crane.png',
     examples: [
       { label: '영화 오프닝' },
       { label: '군중 장면' },
@@ -660,7 +863,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: 'SnorriCam',
     category: 'Movement',
     description: '배우 몸에 카메라를 부착해 배경이 움직이는 독특한 시점. 배우가 느끼는 심리적 불안, 몰입감을 주는 영상에 활용됩니다.',
-    previewUrl: '/images/angle/snorricam.png',
+    previewUrl: '/images/angle/movement/snorricam.png',
     examples: [
       { label: '심리 스릴러' },
       { label: '몰입감 연출' },
@@ -673,7 +876,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Camcorder',
     category: 'Movement',
     description: '90년대 홈비디오 특유의 질감과 레트로 감성을 연출합니다. 회상, 가족, 레트로 영상에 적합합니다.',
-    previewUrl: '/images/angle/camcorder.png',
+    previewUrl: '/images/angle/movement/camcorder.png',
     examples: [
       { label: '가족 홈비디오' },
       { label: '회상 장면' },
@@ -686,7 +889,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: '50mm Lens',
     category: 'Movement',
     description: '사람 눈과 유사한 원근감과 왜곡 없는 시각을 제공하는 렌즈. 스냅, 인물, 여행 영상에 활용됩니다.',
-    previewUrl: '/images/angle/50mm.png',
+    previewUrl: '/images/angle/movement/50mm.png',
     examples: [
       { label: '여행 스냅' },
       { label: '인물 사진' },
@@ -699,7 +902,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Wide Angle',
     category: 'Movement',
     description: '광각 렌즈로 넓은 공간감과 거리감을 강조합니다. 풍경, 실내, 군중 영상에 적합합니다.',
-    previewUrl: '/images/angle/wide.png',
+    previewUrl: '/images/angle/movement/wide.png',
     examples: [
       { label: '풍경 사진' },
       { label: '실내 촬영' },
@@ -712,7 +915,7 @@ const MOVEMENT_ANGLE_OPTIONS: CameraOption[] = [
     value: 'Realistic Documentary',
     category: 'Movement',
     description: '관찰자 시점으로 사실적이고 자연스러운 연출을 강조합니다. 다큐멘터리, 뉴스, 사실주의 영상에 활용됩니다.',
-    previewUrl: '/images/angle/docu.png',
+    previewUrl: '/images/angle/movement/docu.png',
     examples: [
       { label: '다큐멘터리' },
       { label: '뉴스 리포트' },
@@ -733,11 +936,7 @@ export const COLOR_OPTIONS: ColorOption[] = [
     id: 'random', 
     label: '랜덤 (Random)',
     value: 'Random',
-    description: 'AI가 영상의 분위기와 목적에 맞는 색감을 자동으로 선택합니다. 다양한 색상 연출을 시도하거나 특별한 효과가 필요할 때 활용하세요.',
-    examples: [
-      { label: '다양한 색상 실험' },
-      { label: '특별한 효과 필요 시' }
-    ]
+    description: '영상의 분위기와 목적에 맞는 색감을 자동으로 선택합니다.',
   },
   {
     id: 'none',
@@ -891,5 +1090,34 @@ export const COLOR_OPTIONS: ColorOption[] = [
       { label: 'IT 광고' },
       { label: '겨울 풍경' }
     ]
+  },
+];
+
+// Aspect Ratio Options (비율 설정)
+export const ASPECT_RATIO_OPTIONS = [
+  { 
+    id: 'random', 
+    label: '랜덤 (Random)',
+    value: 'Random',
+    description: '다양한 비율을 시도하거나 특별한 효과가 필요할 때 활용하세요.',
+  },
+  {
+    id: '16-9',
+    label: '16:9',
+    value: '16:9',
+    description: '가장 널리 사용되는 표준 와이드스크린 비율로, 유튜브, TV, 영화 등 다양한 영상에 적합합니다.',
+    default: true
+  },
+  {
+    id: '9-16',
+    label: '9:16',
+    value: '9:16',
+    description: '세로형 영상에 적합한 비율로, 쇼츠, 릴스, 틱톡 등 모바일 콘텐츠에 주로 사용됩니다.'
+  },
+  {
+    id: '1-1',
+    label: '1:1',
+    value: '1:1',
+    description: '정사각형 비율로, 인스타그램 피드 등에서 자주 사용됩니다.'
   },
 ];
