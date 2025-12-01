@@ -1,5 +1,9 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
+// Gemini 모델명 상수 분리
+const GEMINI_TEXT_MODEL = 'gemini-2.5-flash';
+const GEMINI_IMAGE_MODEL = 'gemini-2.5-flash-image';
+
 
 export const generateImage = async (
   lighting: string,
@@ -20,13 +24,22 @@ export const generateImage = async (
   // 1. Expand and Translate Scenario using Text Model (gemini-2.5-flash)
   // This turns keywords into a full English description and provides a Korean translation.
   // 장면(scene)과 세부정보(details)를 합쳐서 시나리오로 사용
-  let scenarioInput = scene ? `${scene}, ${details}` : details;
+  let scenarioInput = '';
+  if (scene && details) {
+    scenarioInput = `${scene}, ${details}`;
+  } else if (scene) {
+    scenarioInput = scene;
+  } else if (details) {
+    scenarioInput = details;
+  } else {
+    scenarioInput = 'A visually interesting, creative scene suitable for a professional photo or video.';
+  }
   let scenarioEn = scenarioInput;
   let scenarioKo = scenarioInput;
 
   try {
     const textResponse = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: GEMINI_TEXT_MODEL,
       contents: `
         You are a professional prompt engineer and translator.
 
@@ -44,7 +57,8 @@ export const generateImage = async (
         3. If the user input contains multiple objects or subjects, creatively imagine a scenario or interaction between them, rather than simply listing them. For example, if the input is 'bowl, car, deer', you might describe a scene where a deer and a car are racing, or a car shaped like a bowl is being observed by a deer. Be creative and make the scene interesting.
         4. If the subject's description conflicts with the camera angle, the camera angle must always take precedence in the scene composition. (e.g., Even if the detail is "wet soil," which implies a close-up, if the angle is a drone shot, the drone's perspective should be prioritized.)
         5. The aspect ratio must be reflected in the scene composition and description. (e.g., If the aspect ratio is 9:16, describe a vertical composition; if 16:9, describe a wide landscape composition, etc.)
-        6. Translate this expanded English description into natural, descriptive Korean.
+        6. If the user input is empty or not provided, you must imagine and create a visually interesting, creative scenario that would be suitable for a professional photo or video, using the other provided options as context.
+        7. Translate this expanded English description into natural, descriptive Korean.
 
         Output strictly in JSON format:
         {
@@ -114,7 +128,7 @@ The image should adhere strictly to the scene, effect, lighting, camera, color, 
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
+      model: GEMINI_IMAGE_MODEL,
       contents: {
         parts: [
           { text: fullPrompt }

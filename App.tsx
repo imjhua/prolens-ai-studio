@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Header from './components/Header';
 import OptionSelector from './components/OptionSelector';
+import UsedOptionsSummary, { UsedOptions } from './components/UsedOptionsSummary';
 import { LIGHTING_OPTIONS, ANGLE_OPTIONS, COLOR_OPTIONS, SCENE_OPTIONS, SPECIAL_EFFECTS_OPTIONS, ASPECT_RATIO_OPTIONS } from './constants';
 
 import { generateImage } from './services/geminiService';
@@ -19,9 +20,9 @@ const App: React.FC = () => {
 
   const [selectedLighting, setSelectedLighting] = useState<string>('random');
   const [selectedPov, setSelectedPov] = useState<string>('random');
-  const [selectedColor, setSelectedColor] = useState<string>('random');
-  const [selectedEffect, setSelectedEffect] = useState<string>('random');
-  const [additionalDetails, setAdditionalDetails] = useState<string>('물방울');
+  const [selectedColor, setSelectedColor] = useState<string>('none');
+  const [selectedEffect, setSelectedEffect] = useState<string>('');
+  const [additionalDetails, setAdditionalDetails] = useState<string>('');
 
   // 특수효과
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
@@ -121,13 +122,10 @@ const App: React.FC = () => {
   const checkValidation = () => {
     const sceneValue = selectedScene === 'custom' ? customScene.trim() : '';
     if (selectedScene === 'custom' && !sceneValue) {
-      setError("장면을 입력해주세요. (예: 황량한 사막, 뜨거운 태양 아래 먼지가 날리는 장면)");
+      setError("장면을 입력해주세요. (예: 황량한 사막, 따거운 태양 아래 먼지가 날리는 장면)");
       return false;
     }
-    if (!additionalDetails.trim()) {
-      setError("추가 세부 정보를 입력해주세요. (예: 숲속의 사슴, 미래 도시의 자동차)");
-      return false;
-    }
+    // 추가 세부 정보는 필수 아님
     return true;
   };
 
@@ -176,17 +174,15 @@ const App: React.FC = () => {
     }
   }, [selectedLighting, selectedPov, selectedColor, additionalDetails, selectedScene, customScene, selectedEffect]);
 
+
+
   return (
     <div className="min-h-screen w-full bg-darker text-slate-200 selection:bg-primary selection:text-white p-2 md:p-12 overflow-x-hidden">
       <div className="w-full max-w-none px-0 py-8 box-border">
         <Header />
-
-
         <div className="w-full">
-
           {/* Left Column: Controls */}
           <div className="space-y-2">
-
             <div className="bg-dark/50 p-6 rounded-2xl border border-slate-800/60 shadow-xl backdrop-blur-sm">
               <OptionSelector
                 title="장면 설정 (Scene)"
@@ -210,36 +206,30 @@ const App: React.FC = () => {
                 selectedId={selectedLighting}
                 onSelect={setSelectedLighting}
               />
-
               <OptionSelector
                 title="카메라 앵글 (Camera Angle) - 시각적 스토리텔링과 몰입, 인물·공간의 관계 표현"
                 options={ANGLE_OPTIONS}
                 selectedId={selectedPov}
                 onSelect={setSelectedPov}
               />
-
-              <OptionSelector
-                title="색상 (Color Grading)"
-                options={COLOR_OPTIONS}
-                selectedId={selectedColor}
-                onSelect={setSelectedColor}
-              />
-
-
               <OptionSelector
                 title="특수효과 (Special Effects)"
                 options={SPECIAL_EFFECTS_OPTIONS}
                 selectedId={selectedEffect}
                 onSelect={setSelectedEffect}
               />
-
+              <OptionSelector
+                title="색상 (Color Grading)"
+                options={COLOR_OPTIONS}
+                selectedId={selectedColor}
+                onSelect={setSelectedColor}
+              />
               <OptionSelector
                 title="비율 (Aspect Ratio)"
                 options={ASPECT_RATIO_OPTIONS}
                 selectedId={selectedAspectRatio}
                 onSelect={setSelectedAspectRatio}
               />
-
               <div className="mb-1">
                 <h3 className="text-lg font-semibold text-slate-200 mb-4 flex items-center">
                   <span className="w-1 h-6 bg-secondary rounded-full mr-2"></span>
@@ -247,11 +237,10 @@ const App: React.FC = () => {
                 </h3>
                 <textarea
                   className="w-full h-32 bg-card border border-slate-700 rounded-xl p-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent resize-none transition-all"
-                  placeholder="추가 설명을 입력하세요. (예: 고풍스러운 책상 / 오래된 책 또는 주인공이 고풍스러운 책상을 앞에 두고, 손에는 오래된 책을 쥐고 있다.)"
+                  placeholder="추가 설명을 입력하세요. (예: 고풍스러운 책상, 오래된 책 / 주인공이 고풍스러운 책상을 앞에 두고, 손에는 오래된 책을 쥐고 있다.)"
                   value={additionalDetails}
                   onChange={(e) => setAdditionalDetails(e.target.value)}
                 />
-
                 {error && (
                   <div className="mt-3 p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm flex items-center">
                     <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -264,34 +253,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Options Summary Pill */}
-            <div className="pt-6">
-              <div className="p-4 bg-card rounded-xl border border-slate-700/50">
-                <h4 className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-2">Selected Configuration</h4>
-                <div className="flex flex-wrap gap-2 text-xs text-slate-300">
-                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                    장면: {usedOptions ? usedOptions.scene : ''}
-                  </span>
-                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                    조명: {usedOptions ? usedOptions.lighting : ''}
-                  </span>
-                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                    시점: {usedOptions ? usedOptions.pov : ''}
-                  </span>
-                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                    색상: {usedOptions ? usedOptions.color : ''}
-                  </span>
-                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                    특수효과: {usedOptions ? usedOptions.effect : ''}
-                  </span>
-                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                    비율: {usedOptions ? (ASPECT_RATIO_OPTIONS.find(opt => opt.id === usedOptions.aspectRatio)?.value || '') : ''}
-                  </span>
-                  <span className="px-2 py-1 bg-slate-800 rounded border border-slate-700">
-                    추가 정보: {usedOptions ? usedOptions.details : ''}
-                  </span>
-                </div>
-              </div>
-            </div>
+            {usedOptions && <UsedOptionsSummary options={usedOptions} />}
 
             <div className="sticky bottom-4 z-10 pt-4 lg:pt-0">
               <button
