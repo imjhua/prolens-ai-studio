@@ -9,7 +9,6 @@ const GENERAL_LIGHTING_OPTIONS: LightingOption[] = [
     label: '랜덤 (Random)',
     value: 'Random',
     description: 'AI가 가장 적절하거나 창의적인 조명을 무작위로 선택합니다. (활용: 창의적인 아이디어가 필요할 때)',
-    previewUrl: '/images/lighting/general/random.png'
   },
 ];
 
@@ -237,7 +236,6 @@ export const ANGLE_OPTIONS: CameraOption[] = [
     label: '랜덤 (Random)',
     value: 'Random',
     description: 'AI가 상황에 맞는 가장 드라마틱한 앵글을 선택합니다. (활용: 의외의 결과를 얻고 싶을 때)',
-    previewUrl: '/images/angle/random.png'
   },
   {
     id: 'fpv',
@@ -345,6 +343,20 @@ export const ANGLE_OPTIONS: CameraOption[] = [
     previewUrl: '/images/angle/extreme-long.png'
   },
   {
+    id: 'dutch',
+    label: '더치 앵글샷 (Dutch Angle)',
+    value: 'Dutch Angle',
+    description: '카메라를 기울여 수평선이 비스듬하게 보이도록 촬영하는 기법. 불안, 혼란, 긴장감, 비정상적인 심리 상태를 시각적으로 표현. (활용: 스릴러, 공포, 심리극, 액션 장면)',
+    previewUrl: '/images/angle/dutch.png'
+  },
+  {
+    id: 'crane',
+    label: '크레인샷 (Crane Shot)',
+    value: 'Crane Shot',
+    description: '크레인이나 지미집 등 장비를 이용해 카메라를 위아래, 앞뒤, 좌우로 자유롭게 이동시키며 촬영하는 기법. 웅장한 스케일, 공간의 입체감, 극적인 전환을 연출. (활용: 영화 오프닝, 대규모 군중 장면, 뮤직비디오)',
+    previewUrl: '/images/angle/crane.png'
+  },
+  {
     id: 'pan',
     label: '팬샷 (Pan Shot)',
     value: 'Pan Shot',
@@ -401,7 +413,6 @@ export const COLOR_OPTIONS: ColorOption[] = [
     label: '랜덤 (Random)',
     value: 'Random',
     description: 'AI가 분위기에 맞는 색감을 자유롭게 선택합니다. (활용: 예상치 못한 예술적 효과를 원할 때)',
-    previewUrl: '/images/color/random.png'
   },
   {
     id: 'none',

@@ -1,9 +1,19 @@
 
+
 import React from 'react';
+
+
+interface Option {
+  id: string;
+  label: string;
+  category?: string;
+  description?: string;
+  previewUrl?: string;
+}
 
 interface OptionSelectorProps {
   title: string;
-  options: { id: string; label: string; category?: string; description?: string; previewUrl?: string }[];
+  options: Option[];
   selectedId: string;
   onSelect: (id: string) => void;
   groupByCategory?: boolean;
@@ -17,7 +27,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
   onSelect,
   groupByCategory // 더 이상 사용하지 않음, 하위 호환만 유지
 }) => {
-  const renderOptions = (opts: typeof options) => (
+  const renderOptions = (opts: Option[]) => (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
       {opts.map((opt) => (
         <div key={opt.id} className="relative group flex">

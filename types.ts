@@ -6,7 +6,7 @@ export interface OptionBase {
   label: string;
   value: string;
   category?: string;
-  description?: string;
+  description: string;
   previewUrl?: string;
 }
 
