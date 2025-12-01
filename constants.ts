@@ -282,18 +282,18 @@ export const ANGLE_OPTIONS: CameraOption[] = [
     previewUrl: '/images/angle/handheld.png'
   },
   { 
-    id: 'wide', 
-    label: '와이드 (Wide)',
-    value: 'Wide Angle',
-    description: '넓은 화각으로 배경과 피사체를 함께 담음. 공간감을 강조. (활용: 풍경 사진, 부동산 내부 촬영, 대규모 군중 씬)',
-    previewUrl: '/images/angle/wide.png'
-  },
-  { 
     id: 'closeup', 
     label: '클로즈업 (Close-up)',
     value: 'Close-up',
     description: '피사체에 가깝게 다가가 세부 묘사에 집중. 감정 표현이나 디테일 강조. (활용: 감정 연기 포착, 보석 광고, 곤충 접사)',
     previewUrl: '/images/angle/closeup.png'
+  },
+  {
+    id: 'extreme-closeup',
+    label: '익스트림 클로즈업 (Extreme Close-up)',
+    value: 'Extreme Close-up',
+    description: '피사체의 극히 일부분(눈, 입, 손 등)을 화면 가득히 담아 극도의 디테일과 감정을 강조하는 샷. (활용: 감정의 극대화, 디테일 강조, 긴장감 연출)',
+    previewUrl: '/images/angle/extreme-closeup.png'
   },
   { 
     id: 'micro', 
@@ -306,14 +306,63 @@ export const ANGLE_OPTIONS: CameraOption[] = [
     id: 'ots', 
     label: '오버 더 숄더 (OTS)',
     value: 'Over The Shoulder',
-    description: '어깨 너머로 상대방을 바라보는 앵글. 대화 장면에서 관계성을 보여줌. (활용: 영화 대화 장면, 인터뷰, 드라마틱한 대치 상황)',
+    description: '어깨 너머로 상대방을 바라보는 앵글. 대화 장면에서 관계성을 보여줌. 상호작용 또는 관계를 강조. (활용: 영화 대화 장면, 인터뷰, 드라마틱한 대치 상황)',
     previewUrl: '/images/angle/ots.png'
+  },
+  {
+    id: 'bust',
+    label: '바스트샷 (Bust Shot)',
+    value: 'Bust Shot',
+    description: '가슴 위쪽부터 머리까지를 프레임에 담는 샷. 인물의 표정, 감정, 상반신의 디테일을 강조. (활용: 인터뷰, 감정 연기, 인물 중심의 장면)',
+    previewUrl: '/images/angle/bust.png'
+  },
+  {
+    id: 'waist',
+    label: '웨이스트샷 (Waist Shot)',
+    value: 'Waist Shot',
+    description: '피사체의 허리 위쪽부터 머리까지를 프레임에 담는 샷. 인물의 표정과 상반신 동작을 강조. (활용: 인터뷰, 토크쇼, 일상 대화, 상반신 중심의 연기)',
+    previewUrl: '/images/angle/waist.png'
+  },
+  {
+    id: 'full',
+    label: '풀샷 (Full Shot)',
+    value: 'Full Shot',
+    description: '피사체의 전신이 프레임에 들어오도록 촬영하는 기법. 동작, 의상, 배경까지 모두 보여줌. 배경이나 장소의 설정을 보여주어 피사체의 위치나 상황을 이해할 수 있도록 한다. (활용: 패션 화보, 무용, 연극, 단체 사진)',
+    previewUrl: '/images/angle/full.png'
+  },
+  { 
+    id: 'wide', 
+    label: '와이드 (Wide)',
+    value: 'Wide Angle',
+    description: '공간과 거리감 기준. 전체적인 환경이나 배경을 보여주어 장면의 분위기와 위치 설정. (활용: 풍경 사진, 부동산 내부 촬영, 대규모 군중 씬)',
+    previewUrl: '/images/angle/wide.png'
+  },
+  {
+    id: 'extreme-long',
+    label: '익스트림 롱샷 (Extreme Long Shot)',
+    value: 'Extreme Long Shot',
+    description: '매우 먼 거리에서 촬영하여 피사체가 작게 보이고, 넓은 배경이나 환경을 강조하는 샷. 장면의 스케일, 분위기, 위치 정보를 전달. (활용: 영화 오프닝, 대자연, 전쟁 장면, 도시 전경)',
+    previewUrl: '/images/angle/extreme-long.png'
+  },
+  {
+    id: 'pan',
+    label: '팬샷 (Pan Shot)',
+    value: 'Pan Shot',
+    description: '카메라가 고정된 위치에서 좌우로 회전시키며 넓은 공간이나 움직임을 따라가는 촬영 기법. 공간의 흐름, 전환, 움직임 강조. (활용: 스포츠 중계, 풍경 소개, 액션 장면)',
+    previewUrl: '/images/angle/pan.png'
+  },
+  {
+    id: 'tilt',
+    label: '틸트 (Tilt Shot)',
+    value: 'Tilt Shot',
+    description: '카메라가 고정된 위치에서 상하로 기울여 위아래로 움직임을 보여주는 촬영 기법. 높이감, 위압감, 시선의 이동을 강조. (활용: 고층 건물, 인물의 위엄, 시점 전환)',
+    previewUrl: '/images/angle/tilt.png'
   },
   { 
     id: 'tracking', 
     label: '트래킹 (Tracking)',
     value: 'Tracking Shot',
-    description: '움직이는 피사체를 따라가며 촬영. 속도감과 이동의 흐름을 표현. (활용: 자동차 경주, 마라톤 중계, 액션 추격신)',
+    description: '카메라가 움직이는 피사체를 따라가며 촬영. 속도감과 이동의 흐름을 표현. (활용: 자동차 경주, 마라톤 중계, 액션 추격신)',
     previewUrl: '/images/angle/tracking.png'
   },
   { 
