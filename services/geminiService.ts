@@ -25,19 +25,23 @@ export const generateImage = async (
   // This turns keywords into a full English description and provides a Korean translation.
   // 장면(scene)과 세부정보(details)를 합쳐서 시나리오로 사용
   let scenarioInput = '';
-  if (scene && details) {
-    scenarioInput = `${scene}, ${details}`;
-  } else if (scene) {
-    scenarioInput = scene;
-  } else if (details) {
-    scenarioInput = details;
-  } else {
+  
+  if(scene && details){
+    if(scene === 'random'){
+      scenarioInput = details;
+    } else{
+      scenarioInput = `${scene}, ${details}`;
+    }
+  }
+
+  if(!details){
     scenarioInput = 'A visually interesting, creative scene suitable for a professional photo or video.';
   }
   let scenarioEn = scenarioInput;
   let scenarioKo = scenarioInput;
 
   try {
+
     const textResponse = await ai.models.generateContent({
       model: GEMINI_TEXT_MODEL,
       contents: `
@@ -58,7 +62,12 @@ export const generateImage = async (
         4. If the subject's description conflicts with the camera angle, the camera angle must always take precedence in the scene composition. (e.g., Even if the detail is "wet soil," which implies a close-up, if the angle is a drone shot, the drone's perspective should be prioritized.)
         5. The aspect ratio must be reflected in the scene composition and description. (e.g., If the aspect ratio is 9:16, describe a vertical composition; if 16:9, describe a wide landscape composition, etc.)
         6. If the user input is empty or not provided, you must imagine and create a visually interesting, creative scenario that would be suitable for a professional photo or video, using the other provided options as context.
-        7. Translate this expanded English description into natural, descriptive Korean.
+        7. If ALL options (lighting, camera, color, effect, aspectRatio, scene) are set to 'random' or empty, and ONLY 'details' (additional explanation) is provided, you must:
+           - Analyze the 'details' (additional explanation) and recommend the most suitable lighting, camera, color, effect, and aspect ratio for the scenario described in 'details'.
+           - Output your recommended values for each option (lighting, camera, color, effect, aspectRatio) as part of the JSON result, along with the expanded English and Korean descriptions.
+           - The recommended options must be creative, visually interesting, and contextually appropriate for the details provided.
+           - If any option is not random, use the provided value instead of recommending.
+        8. Translate this expanded English description into natural, descriptive Korean.
 
         Output strictly in JSON format:
         {
